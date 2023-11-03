@@ -12,6 +12,5 @@ export const Routers = () => {
                 <Route path='/' element={<Feed />} />
             </Routes>
         </BrowserRouter>
-
     )
 }

@@ -3,16 +3,9 @@
 
 
 
-.sidebar_active.active {
+.__active.active {
 
-    @apply bg-primary-400 border border-black border-r-0 border-l-0;
+    @apply border-b-4 border-primary-400;
 
-    svg {
-        @apply fill-neutral-900;
-    }
-
-    p {
-        @apply text-neutral-900 uppercase
-    }
 
 }

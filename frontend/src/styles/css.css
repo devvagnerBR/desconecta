@@ -3,9 +3,23 @@
 @tailwind utilities;
 
 *{
-    @apply p-0 m-0 box-border outline-none scroll-smooth leading-4 text-secondary-800
+    @apply p-0 m-0 box-border outline-none scroll-smooth leading-4 text-secondary-800 font-Nunito
 }
 
 body,html{
     @apply w-full h-full 
+}
+
+
+
+
+.__block{
+    @apply select-none
+}
+
+
+@layer base {
+    a,button, img,h4{
+        @apply select-none
+    }
 }
