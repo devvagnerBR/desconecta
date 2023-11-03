@@ -9,19 +9,18 @@ export default {
   theme: {
     extend: {
       fontFamily: {
-        'Poppins': ['Poppins'],
-        "IBM": ['IBM Plex Mono']
+        "Nunito": ['Nunito Sans'],
       },colors: {
 
         primary: {
-          "400": "#94C7F6"
+          "400": "#00E78E"
         },
         secondary: {
           "50": "#FFFFFF",
-          "100": "#F8F9FF",
-          "600": "#ADB3BD",
-          "700": "#8C929D",
-          "800": "#060622"
+          "200": "#F7F7F7",
+          "400": "#EAEAEA",
+          "600": "#BFBFBF",
+          "800": "#121214"
         }
       }
     },

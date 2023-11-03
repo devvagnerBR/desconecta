@@ -1,13 +1,5 @@
+import { Routers } from "./router"
 import "./styles/sass.scss"
 
-function App() {
-
-
-  return (
-    <>
-      <h1>HELLO WORLD</h1>
-    </>
-  )
-}
-
+const App = () => <Routers />
 export default App
