@@ -2,13 +2,12 @@ import { Header } from '@/components'
 import Banner from "@/assets/images/login-main-img.svg"
 import { ContainerApp } from '@/components';
 import { NavLink } from 'react-router-dom';
-import { RegisterForm } from '..';
+import { RegisterForm } from './register-form';
 
 export const Register = () => {
   return (
     <ContainerApp>
 
-      <Header />
       <section className=' flex items-start justify-around border-secondary-800 rounded-sm h-[calc(100%-10rem)]'>
 
         <div className='w-full h-full flex items-center justify-center max-lg:hidden'>

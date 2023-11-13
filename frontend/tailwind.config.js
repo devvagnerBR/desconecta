@@ -9,7 +9,7 @@ export default {
   theme: {
     extend: {
       fontFamily: {
-        "Nunito": ['Nunito Sans'],
+        "Nunito": ['Nunito'],
       },colors: {
 
         primary: {

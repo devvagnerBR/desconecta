@@ -1,5 +1,8 @@
+import { ContainerApp, Header, SidebarMenu } from '@/components'
 import { ContextProvider } from '@/context/context-provider'
-import { Feed, Login, Register } from '@/pages'
+import { Login, Register, Notifications, Feed, Saved, Hashtags } from '@/pages'
+import { Profile } from '@/pages/private/profile'
+
 import { BrowserRouter, Routes, Route } from "react-router-dom"
 
 
@@ -8,11 +11,21 @@ export const Routers = () => {
     return (
         <BrowserRouter>
             <ContextProvider>
-                <Routes>
-                    <Route path='/entrar' element={<Login />} />
-                    <Route path='/criar-conta' element={<Register />} />
-                    <Route path='/' element={<Feed />} />
-                </Routes>
+                <Header />
+                <ContainerApp>
+                    <div className='flex '>
+                        <SidebarMenu />
+                        <Routes>
+                            <Route path='/entrar' element={<Login />} />
+                            <Route path='/criar-conta' element={<Register />} />
+                            <Route path='/' element={<Feed />} />
+                            <Route path='/notificacoes' element={< Notifications />} />
+                            <Route path='/perfil' element={< Profile />} />
+                            <Route path='/salvos' element={< Saved />} />
+                            <Route path='/hashtag' element={< Hashtags />} />
+                        </Routes>
+                    </div>
+                </ContainerApp>
             </ContextProvider>
         </BrowserRouter>
     )

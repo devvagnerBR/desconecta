@@ -1,7 +1,10 @@
-export { Login } from "./login"
-export { LoginForm } from "./login/login-form"
+export { Login } from "./public/login"
+export { LoginForm } from "./public/login/login-form"
 
-export { Register } from "./register"
-export { RegisterForm } from "./register/register-form"
+export { Register } from "./public/register"
+export { RegisterForm } from "./public/register/register-form"
 
-export { Feed } from "./feed"
+export { Feed } from "./private/feed"
+export { Notifications } from "./private/notifications"
+export { Saved } from "./private/saved"
+export { Hashtags } from "./private/hashtags"

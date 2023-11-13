@@ -8,7 +8,6 @@ export const Login = () => {
 
     <ContainerApp>
 
-      <Header />
       <section className=' flex items-start justify-around border-secondary-800 rounded-sm h-[calc(100%-10rem)]'>
 
         <div className='w-full h-full flex items-center justify-center max-lg:hidden'>
