@@ -3,15 +3,14 @@ import { registerBusiness } from "./register-business";
 
 export const RegisterForm = () => {
 
-    // username | email | curso | senha
-
     const {
         handleShowPassword,
         showPassword,
         registerLoading,
         onSubmit,
         formComplete,
-        register
+        register,
+        errors
     } = registerBusiness()
 
     return (
@@ -29,6 +28,7 @@ export const RegisterForm = () => {
                     placeholder='Digite aqui o nome de usuário'
                     type="text"
                 />
+                {errors.username && <span className="text-red-500 text-xs">{errors.username.message}</span>}
             </label>
             <label
                 htmlFor='email'
@@ -41,6 +41,7 @@ export const RegisterForm = () => {
                     placeholder='Digite aqui o seu email institucional'
                     type="text"
                 />
+                {errors.email && <span className="text-red-500 text-xs">{errors.email.message}</span>}
             </label>
             <label
                 htmlFor='curso'
@@ -52,7 +53,6 @@ export const RegisterForm = () => {
                     <option value={1} className="h-10">Análise e desenvolvimento de sistemas</option>
                     <option value={2} className="h-10">Engenharia de software</option>
                     <option value={3} className="h-10">Engenharia da computação</option>
-
                 </select>
 
             </label>
@@ -75,6 +75,8 @@ export const RegisterForm = () => {
                         {showPassword && <Icon.Eye size={24} className='fill-secondary-600' />}
                     </div>
                 </div>
+                {errors.password && <span className="text-red-500 text-xs">{errors.password.message}</span>}
+
             </label>
             {!registerLoading.loading &&
                 <button

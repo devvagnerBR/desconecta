@@ -50,15 +50,10 @@ export const registerBusiness = () => {
 
     const currentValues = watch();
     const formComplete = currentValues.curso && currentValues.username && currentValues.email && currentValues.password;
-    console.log( errors )
     const onSubmit = handleSubmit( async ( data ) => {
-        console.log( "comecei aqui" )
         try {
-
             registerLoading.execute( async () => {
-                "EXECUTEI"
                 console.log( data )
-                console.log( registerLoading.loading )
             } )
         } catch ( error: any ) {
             throw new Error( error.message )
@@ -71,6 +66,7 @@ export const registerBusiness = () => {
         handleShowPassword,
         registerLoading,
         formComplete,
-        onSubmit
+        onSubmit,
+        errors
     }
 }
