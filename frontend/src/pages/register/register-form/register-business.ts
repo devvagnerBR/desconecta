@@ -4,6 +4,7 @@ import { RegisterForm } from './index';
 import { z } from 'zod';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod/src/zod.js';
+import { userRequests } from '@/requests';
 
 export type RegisterFormProps = {
     curso: number
@@ -14,7 +15,7 @@ export type RegisterFormProps = {
 const formRegisterValidade = z.object( {
 
     curso:
-        z.string(),
+        z.coerce.number().min( 1 ).max( 3 ),
     username:
         z.string().nonempty( "Campo obrigatório" )
             .min( 3, "Mínimo de 3 caracteres" )
@@ -34,6 +35,8 @@ const formRegisterValidade = z.object( {
 export const registerBusiness = () => {
 
     const registerLoading = useLoading();
+    const { register: signIn } = userRequests();
+
     const [showPassword, setShowPassword] = React.useState<Boolean>( false )
 
     const handleShowPassword = () => {
@@ -50,16 +53,15 @@ export const registerBusiness = () => {
 
     const currentValues = watch();
     const formComplete = currentValues.curso && currentValues.username && currentValues.email && currentValues.password;
-    const onSubmit = handleSubmit( async ( data ) => {
-        try {
-            registerLoading.execute( async () => {
-                console.log( data )
-            } )
-        } catch ( error: any ) {
-            throw new Error( error.message )
-        }
+
+
+    const onSubmit = handleSubmit( async ( data: RegisterFormProps ) => {
+        registerLoading.execute( async () => {
+            await signIn.mutateAsync( data );
+        } )
     } )
 
+    console.log(errors)
     return {
         register,
         showPassword,

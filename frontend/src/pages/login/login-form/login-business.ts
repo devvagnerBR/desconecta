@@ -1,8 +1,10 @@
 import { useLoading } from '@/hooks'
+import { userRequests } from '@/requests'
 import { zodResolver } from '@hookform/resolvers/zod'
 import React from 'react'
 import { useForm } from 'react-hook-form'
 import { z } from 'zod'
+
 
 export type LoginFormProps = {
     email: string
@@ -21,6 +23,8 @@ const formLoginValidade = z.object( {
 export const loginBusiness = () => {
 
     const loginLoading = useLoading();
+     const { login } = userRequests();
+   
 
     const [showPassword, setShowPassword] = React.useState<Boolean>( false )
 
@@ -36,17 +40,10 @@ export const loginBusiness = () => {
         formState: { errors }
     } = useForm<LoginFormProps>( { resolver: zodResolver( formLoginValidade ) } );
 
-    const onSubmit = handleSubmit( async ( data ) => {
-        try {
-            console.log( "comecei aqui" )
-            loginLoading.execute( async () => {
-                "EXECUTEI"
-                console.log( data )
-                console.log( loginLoading.loading )
-            } )
-        } catch ( error: any ) {
-            throw new Error( error.message )
-        }
+    const onSubmit = handleSubmit( async ( data: LoginFormProps ) => {
+        loginLoading.execute( async () => {
+            await login.mutateAsync( data );
+        } )
     } )
 
     const currentValues = watch();

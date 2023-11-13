@@ -1,6 +1,13 @@
 import * as Icon from "@phosphor-icons/react";
 import { loginBusiness } from './login-business';
+import { useMutation } from "react-query";
+import { api } from "@/libs/axios";
 
+
+interface UserLoginRequest {
+    email: string; password:
+    string;
+}
 
 export const LoginForm = () => {
 
@@ -12,8 +19,6 @@ export const LoginForm = () => {
         loginLoading,
         formComplete,
     } = loginBusiness();
-
-
 
     return (
         <form

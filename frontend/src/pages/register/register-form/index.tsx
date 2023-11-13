@@ -50,9 +50,9 @@ export const RegisterForm = () => {
                 <select className='h-10 rounded-sm border pl-2 text-secondary-700 placeholder:font-light font-normal'
                     {...register( 'curso' )}>
                     id="curso"
-                    <option value={1} className="h-10">Análise e desenvolvimento de sistemas</option>
-                    <option value={2} className="h-10">Engenharia de software</option>
-                    <option value={3} className="h-10">Engenharia da computação</option>
+                    <option value={Number( 1 )} className="h-10">Análise e desenvolvimento de sistemas</option>
+                    <option value={Number( 2 )} className="h-10">Engenharia de software</option>
+                    <option value={Number( 3 )} className="h-10">Engenharia da computação</option>
                 </select>
 
             </label>
