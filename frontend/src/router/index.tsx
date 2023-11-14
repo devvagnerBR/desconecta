@@ -1,4 +1,4 @@
-import { ContainerApp, Header, MenuMobile, SidebarMenu } from '@/components'
+import { ContainerApp, Header, MenuMobile, ModalContainer, SidebarMenu } from '@/components'
 import { ContextProvider } from '@/context/context-provider'
 import { Login, Register, Notifications, Feed, Saved, Hashtags, Search } from '@/pages'
 import { Profile } from '@/pages/private/profile'
@@ -11,6 +11,7 @@ export const Routers = () => {
     return (
         <BrowserRouter>
             <ContextProvider>
+                <ModalContainer />
                 <Header />
                 <ContainerApp>
                     <div className='flex h-full'>

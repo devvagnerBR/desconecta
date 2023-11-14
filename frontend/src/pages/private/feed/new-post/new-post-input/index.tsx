@@ -2,7 +2,7 @@
 export const NewPostInput = () => {
     return (
         <div className='flex flex-col items-center justify-center'>
-            <div className='flex items-center w-full cursor-pointer'>
+            <div  className='flex items-center w-full cursor-pointer'>
                 <div className="w-full bg-secondary-50 h-10 border flex items-center rounded-sm rounded-r-none pl-2">
                     <p className="font-light text-secondary-600">Compartilhe algo novo ...</p>
                 </div>
