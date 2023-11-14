@@ -1,7 +1,7 @@
-import React from 'react'
-
 export const Notifications = () => {
     return (
-        <div>Notifications</div>
+        <div className='border min-h-full  w-full h-full p-4 bg-secondary-400'>
+            NOTIFICAÇÕES
+        </div>
     )
 }

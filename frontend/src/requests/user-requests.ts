@@ -46,6 +46,10 @@ export const userRequests = () => {
         }
     } );
 
+    const getUserProfile = async () => {
+        const user = await api.get( '/profile' );
+        return user.data
+    }
 
-    return { login, register }
+    return { login, register, getUserProfile }
 }

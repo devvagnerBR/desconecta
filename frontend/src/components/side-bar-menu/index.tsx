@@ -9,7 +9,7 @@ export const SidebarMenu = () => {
 
     if ( isSessionPage ) return null
     return (
-        <div className='flex flex-col max-sm:hidden gap-4 w-48 shrink-0 pl-4'>
+        <div className='flex flex-col max-sm:hidden gap-4 w-48 shrink-0 pl-2 max-md:pl-4'>
             {menuData.map( ( item ) => {
                 return (
                     <NavLink
