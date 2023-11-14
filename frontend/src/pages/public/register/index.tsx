@@ -8,7 +8,7 @@ export const Register = () => {
   return (
     <ContainerApp>
 
-      <section className=' flex items-start justify-around border-secondary-800 rounded-sm h-[calc(100%-10rem)]'>
+      <section className='mt-20 flex items-start justify-around border-secondary-800 rounded-sm h-[calc(100%-10rem)]'>
 
         <div className='w-full h-full flex items-center justify-center max-lg:hidden'>
           <img src={Banner} alt="" />
