@@ -61,7 +61,6 @@ export const registerBusiness = () => {
         } )
     } )
 
-    console.log(errors)
     return {
         register,
         showPassword,
