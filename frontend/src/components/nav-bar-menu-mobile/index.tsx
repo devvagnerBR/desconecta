@@ -4,7 +4,7 @@ import { NavLink } from 'react-router-dom'
 
 export const MenuMobile = () => {
     return (
-        <div className='h-20 z-50 bg-secondary-200 sm:hidden w-full bottom-0 flex items-center justify-evenly  absolute'>
+        <div className='h-20 z-50 bg-secondary-200 sm:hidden w-full bottom-0 flex items-center justify-evenly  fixed'>
 
             {menuMobileData.map( ( item ) => {
                 return (

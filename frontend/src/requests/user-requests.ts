@@ -1,3 +1,4 @@
+import { User } from "@/context/user-context";
 import { api } from "@/libs/axios";
 import { setCookie } from "@/libs/cookies-js";
 import { useMutation } from "react-query";
@@ -51,5 +52,11 @@ export const userRequests = () => {
         return user.data
     }
 
-    return { login, register, getUserProfile }
+
+    const getPosts = async () => {
+        const posts = await api.get( '/posts' );
+        return posts.data
+    }
+
+    return { login, register, getUserProfile, getPosts }
 }

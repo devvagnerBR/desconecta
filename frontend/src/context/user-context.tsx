@@ -4,7 +4,7 @@ import { userRequests } from "@/requests";
 import { useQuery } from "react-query";
 
 export interface User {
-    id: number,
+    id: string,
     curso: string,
     username: string,
     email: string,
