@@ -1,0 +1,48 @@
+// {
+//   "compilerOptions": {
+//     "target": "ES2020", /* Set the JavaScript language version for emitted JavaScript and include compatible library declarations. */
+//     "module": "commonjs", /* Specify what module code is generated. */
+//     /* Specify how TypeScript looks up a file from a given module specifier. */
+//     "baseUrl": "./", /* Specify the base directory to resolve non-relative module names. */
+//     "paths": {
+//       "@/*": [
+//         "./src/*"
+//       ]
+//     },
+//     "noImplicitAny": true,
+//     "skipLibCheck": true /* Skip type checking all .d.ts files. */
+//   }
+// }
+{
+  "compilerOptions": {
+    "lib": [
+      "ESNext"
+    ],
+    "baseUrl": "./", /* Specify the base directory to resolve non-relative module names. */
+    "paths": {
+      "@/*": [
+        "./src/*"
+      ]
+    },
+    "target": "es6" /* Set the JavaScript language version for emitted JavaScript and include compatible library declarations. */,
+    "module": "commonjs" /* Specify what module code is generated. */,
+    "sourceMap": true /* Create source map files for emitted JavaScript files. */,
+    "outDir": "./dist" /* Specify an output folder for all emitted files. */,
+    "rootDir": "./src" /* Specify the root folder within your source files. */,
+    "removeComments": true /* Disable emitting comments. */,
+    "esModuleInterop": true /* Emit additional JavaScript to ease support for importing CommonJS modules. This enables `allowSyntheticDefaultImports` for type compatibility. */,
+    "forceConsistentCasingInFileNames": true /* Ensure that casing is correct in imports. */,
+    "strict": true /* Enable all strict type-checking options. */,
+    "noImplicitAny": true /* Enable error reporting for expressions and declarations with an implied `any` type.. */,
+    "skipLibCheck": true /* Skip type checking all .d.ts files. */,
+    "moduleResolution": "Node",
+    "resolveJsonModule": true
+  },
+  "include": [
+    "src/**/*"
+  ],
+  "exclude": [
+    "node_modules",
+    "**/*.spec.ts"
+  ]
+}

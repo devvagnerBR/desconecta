@@ -1,0 +1,32 @@
+{
+  "name": "desconecta_backend",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "dev": "tsx --watch src/server.ts --exit-child",
+    "start": "node build/server.js",
+    "build": "tsup src --out-dir build"
+  },
+  "keywords": [],
+  "author": "devvagnerBR",
+  "license": "ISC",
+  "devDependencies": {
+    "@types/node": "^20.9.0",
+    "prisma": "^5.6.0",
+    "tsup": "^7.2.0",
+    "tsx": "^4.1.2",
+    "typescript": "^5.2.2",
+    "vite-tsconfig-paths": "^4.2.1",
+    "vitest": "^0.34.6"
+  },
+  "dependencies": {
+    "@fastify/cookie": "^9.2.0",
+    "@fastify/jwt": "^7.2.3",
+    "@prisma/client": "^5.6.0",
+    "bcryptjs": "^2.4.3",
+    "dotenv": "^16.3.1",
+    "fastify": "^4.24.3",
+    "zod": "^3.22.4"
+  }
+}
