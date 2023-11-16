@@ -53,7 +53,7 @@ export class USER_BUSINESS {
         if ( !user ) throw new CustomError( 404, "usuário não encontrado" )
 
         const doesPasswordMatch = await bcrypt.compare( data.password, user.password )
-        if ( !doesPasswordMatch ) throw new CustomError( 401, "senha incorreta" )
+        if ( !doesPasswordMatch ) throw new CustomError( 401, "credencias inválidas" )
 
         return user.id
     }

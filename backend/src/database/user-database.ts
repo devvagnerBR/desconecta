@@ -10,11 +10,16 @@ export class USER_DATABASE {
             data: {
                 username: data.username,
                 password: data.password,
-                email: data.email
+                email: data.email,
+                course: {
+                    connect: {
+                        id: data.course_id
+                    }
+                }
             }
         } )
 
-        await PRISMA.courseUser.create( { data: { user_id: user.id, course_id: data.course_id, } } )
+
     }
 
     async findByEmail( email: string ): Promise<User | null> {
@@ -37,24 +42,14 @@ export class USER_DATABASE {
         const user = await PRISMA.user.findUnique( {
             where: { id: userId },
             include: {
-                courses: {
-                    include: {
-                        Course: true
-                    },
-                }
+                course: true
             }
+
         } )
 
-        return {
-            user: {
-                username: user?.username,
-                email: user?.email,
-                id: user?.id,
-                avatar: user?.avatar,
-                created_at: user?.created_at
-            },
-            courses: user?.courses.map( course => course.Course )
-        };
+
+        return user
+
 
     }
 }

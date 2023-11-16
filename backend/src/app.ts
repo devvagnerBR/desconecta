@@ -5,8 +5,15 @@ import fastifyJwt from "@fastify/jwt";
 import { userRoutes } from "./routes/user-routes";
 import { ZodError } from "zod";
 import { CustomError } from "./entities/custom-error";
+import cors from '@fastify/cors'
 
-export const app = fastify();
+export const app =  fastify();
+
+
+app.register( cors, {
+    origin: '*',
+} );
+
 
 app.register( fastifyJwt, {
     secret: env.JWT_SECRET,
