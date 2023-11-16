@@ -23,8 +23,8 @@ const formLoginValidade = z.object( {
 export const loginBusiness = () => {
 
     const loginLoading = useLoading();
-     const { login } = userRequests();
-   
+    const { login } = userRequests();
+
 
     const [showPassword, setShowPassword] = React.useState<Boolean>( false )
 
@@ -44,10 +44,33 @@ export const loginBusiness = () => {
         loginLoading.execute( async () => {
             await login.mutateAsync( data );
         } )
+
     } )
 
     const currentValues = watch();
     const formComplete = currentValues.email && currentValues.password;
+
+    interface LoginError {
+        response: {
+            data: {
+                message: string;
+            };
+        };
+    }
+
+
+    let loginErrorMessage: string | undefined
+    if ( login.error ) {
+        let { response: { data: { message: msg } } }: LoginError = login.error as LoginError;
+        loginErrorMessage = msg
+    }
+
+
+
+
+
+
+
 
     return {
         showPassword,
@@ -58,6 +81,9 @@ export const loginBusiness = () => {
         getValues,
         loginLoading,
         currentValues,
-        formComplete
+        formComplete,
+        loginErrorMessage
+
+
     }
 }

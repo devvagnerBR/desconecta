@@ -9,7 +9,7 @@ export const Feed = () => {
     return (
         <div className='border min-h-full h-fit w-full  py-4 px-2 bg-secondary-200'>
             <NewPostInput />
-            <Posts/>
+            <Posts />
         </div>
     )
 }

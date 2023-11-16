@@ -1,13 +1,5 @@
 import * as Icon from "@phosphor-icons/react";
 import { loginBusiness } from './login-business';
-import { useMutation } from "react-query";
-import { api } from "@/libs/axios";
-
-
-interface UserLoginRequest {
-    email: string; password:
-    string;
-}
 
 export const LoginForm = () => {
 
@@ -18,7 +10,9 @@ export const LoginForm = () => {
         onSubmit,
         loginLoading,
         formComplete,
+        loginErrorMessage
     } = loginBusiness();
+
 
     return (
         <form
@@ -58,7 +52,7 @@ export const LoginForm = () => {
                     </div>
                 </div>
             </label>
-
+            {loginErrorMessage && <p className="text-red-500">{loginErrorMessage}</p>}
             {!loginLoading.loading &&
                 <button
                     disabled={!formComplete}

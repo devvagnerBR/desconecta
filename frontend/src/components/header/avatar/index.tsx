@@ -1,5 +1,4 @@
 import { User } from '@/context/user-context'
-import React from 'react'
 
 export const Avatar = ( { data, size = 12 }: { data: User, size?: number } ) => {
 

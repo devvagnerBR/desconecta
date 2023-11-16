@@ -5,10 +5,18 @@ import { useQuery } from "react-query";
 
 export interface User {
     id: string,
-    curso: string,
+    avatar: string,
+    created_at: string,
+    course_id: string,
     username: string,
     email: string,
-    avatar: string
+    course: {
+        id: string,
+        name: string,
+        created_at: string,
+        updated_at: string
+        status: boolean
+    }
 }
 
 interface UserContextProps {
@@ -25,10 +33,11 @@ const UserContextProvider = ( { children }: React.PropsWithChildren ) => {
 
     const { getUserProfile } = userRequests()
 
-    const { data } = useQuery( ['user'], getUserProfile, {
+    const { data } = useQuery<User | any>( ['user'], getUserProfile, {
         refetchOnWindowFocus: false,
         enabled: !!getCookie( "token" )
     } )
+
 
     return (
         <UserContext.Provider value={{ isLogged, setIsLogged, data }}>

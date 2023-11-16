@@ -1,12 +1,13 @@
 import { User } from "@/context/user-context";
 import { api } from "@/libs/axios";
-import { setCookie } from "@/libs/cookies-js";
+import { getCookie, removeCookie, setCookie } from "@/libs/cookies-js";
+import { queryClient } from "@/libs/react-query";
 import { useMutation } from "react-query";
 import { useNavigate } from "react-router-dom";
 
 interface UserLoginRequest {
-    email: string; password:
-    string;
+    email: string;
+    password: string;
 }
 export type RegisterFormProps = {
     curso: number
@@ -17,24 +18,27 @@ export type RegisterFormProps = {
 
 export const userRequests = () => {
 
+    const token = getCookie( "token" )
+
     const navigate = useNavigate()
 
     const login = useMutation( async ( { email, password }: UserLoginRequest ) => {
-        await api.post( '/login', { email, password } );
-        const token = await api.get( "token" )
-        setCookie( "token", token.data[0] )
+
+        await removeCookie( "token" )
+        await queryClient.invalidateQueries( ["user"] )
+        const res = await api.post( '/user/auth', { email, password } );
+        setCookie( "token", res.data.token )
+
     }, {
         onSuccess: () => {
             navigate( "/" )
-        },
-        onError: () => {
-            throw new Error( "Email ou senha incorretos" )
         }
     } )
 
     const register = useMutation( async ( data: RegisterFormProps ) => {
 
-        await api.post( '/register', data );
+        await api.post( '/register', data,
+        );
         const token = await api.get( "token" )
         setCookie( "token", token.data[0] )
 
@@ -48,8 +52,10 @@ export const userRequests = () => {
     } );
 
     const getUserProfile = async () => {
-        const user = await api.get( '/profile' );
-        return user.data
+
+        const profile = await api.get( '/user',
+            { headers: { Authorization: `Bearer ${token}` } } );
+        return profile.data
     }
 
 
