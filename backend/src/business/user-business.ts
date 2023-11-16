@@ -3,6 +3,7 @@ import { Prisma } from '@prisma/client';
 import *  as bcrypt from 'bcryptjs';
 import { env } from '@/env';
 import { CustomError } from '@/entities/custom-error';
+import { COURSE_DATABASE } from '@/database/course-database';
 
 interface RegisterRequest {
     username: string;
@@ -11,13 +12,24 @@ interface RegisterRequest {
     course_id: number;
 }
 
+interface AuthenticateRequest {
+    email: string;
+    password: string;
+}
+
 export class USER_BUSINESS {
 
-    constructor( private userDatabase: USER_DATABASE ) { }
+    constructor(
+        private userDatabase: USER_DATABASE,
+        private courseDatabase: COURSE_DATABASE
+    ) { }
 
     async create( { username, email, password, course_id }: RegisterRequest ): Promise<void> {
 
         const passwordHash = await bcrypt.hash( password, env.BCRYPT_SALT )
+
+        const courseExists = await this.courseDatabase.findById( course_id )
+        if ( !courseExists ) throw new CustomError( 404, "curso não encontrado" )
 
         const usernameExists = await this.userDatabase.fingByUsername( username )
         if ( usernameExists ) throw new CustomError( 409, "nome de usuário já cadastrado" )
@@ -33,6 +45,23 @@ export class USER_BUSINESS {
         }
 
         await this.userDatabase.create( data )
+    }
 
+    async authenticate( data: AuthenticateRequest ): Promise<string> {
+
+        const user = await this.userDatabase.findByEmail( data.email )
+        if ( !user ) throw new CustomError( 404, "usuário não encontrado" )
+
+        const doesPasswordMatch = await bcrypt.compare( data.password, user.password )
+        if ( !doesPasswordMatch ) throw new CustomError( 401, "senha incorreta" )
+
+        return user.id
+    }
+
+    async profile( userId: string ) {
+        const user = await this.userDatabase.profile( userId )
+        if ( !user ) throw new CustomError( 404, "usuário não encontrado" )
+
+        return user
     }
 }

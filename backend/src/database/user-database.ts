@@ -13,7 +13,7 @@ export class USER_DATABASE {
                 email: data.email
             }
         } )
-        
+
         await PRISMA.courseUser.create( { data: { user_id: user.id, course_id: data.course_id, } } )
     }
 
@@ -30,5 +30,31 @@ export class USER_DATABASE {
     async findById( id: string ): Promise<User | null> {
         const user = await PRISMA.user.findUnique( { where: { id } } )
         return user;
+    }
+
+    async profile( userId: string ) {
+
+        const user = await PRISMA.user.findUnique( {
+            where: { id: userId },
+            include: {
+                courses: {
+                    include: {
+                        Course: true
+                    },
+                }
+            }
+        } )
+
+        return {
+            user: {
+                username: user?.username,
+                email: user?.email,
+                id: user?.id,
+                avatar: user?.avatar,
+                created_at: user?.created_at
+            },
+            courses: user?.courses.map( course => course.Course )
+        };
+
     }
 }
