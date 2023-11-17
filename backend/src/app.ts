@@ -6,8 +6,9 @@ import { userRoutes } from "./routes/user-routes";
 import { ZodError } from "zod";
 import { CustomError } from "./entities/custom-error";
 import cors from '@fastify/cors'
+import { postRoutes } from "./routes/post-routes";
 
-export const app =  fastify();
+export const app = fastify();
 
 
 app.register( cors, {
@@ -29,6 +30,7 @@ app.register( fastifyJwt, {
 
 app.register( fastifyCookie );
 app.register( userRoutes );
+app.register( postRoutes );
 
 app.setErrorHandler( ( error, _, res ) => {
 

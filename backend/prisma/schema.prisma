@@ -8,14 +8,16 @@ datasource db {
 }
 
 model User {
-  id         String   @id @default(uuid())
-  username   String   @unique
-  email      String   @unique
-  created_at DateTime @default(now())
+  id         String    @id @default(uuid())
+  username   String    @unique
+  email      String    @unique
+  created_at DateTime  @default(now())
   password   String
   avatar     String?
   course_id  Int?
-  course     Course?  @relation(fields: [course_id], references: [id])
+  course     Course?   @relation(fields: [course_id], references: [id])
+  Comment    Comment[]
+  Post       Post[]
 
   @@map("users")
 }
@@ -26,7 +28,51 @@ model Course {
   created_at DateTime @default(now())
   updated_at DateTime @updatedAt
   status     Boolean  @default(true)
-  Users      User[]
+  users      User[]
 
   @@map("courses")
+}
+
+enum PostType {
+  PUBLIC
+  COURSE
+}
+
+model Post {
+  id         String    @id @default(uuid())
+  author_id  String
+  content    String
+  created_at DateTime  @default(now())
+  type       PostType? @default(PUBLIC)
+
+  user     User?     @relation(fields: [author_id], references: [id])
+  comments Comment[]
+  likes    Likes[]
+
+  @@map("posts")
+}
+
+model Comment {
+  id         String   @id @default(uuid())
+  author_id  String
+  content    String
+  created_at DateTime @default(now())
+
+  post_id String
+  user    User?  @relation(fields: [author_id], references: [id])
+
+  Post Post? @relation(fields: [post_id], references: [id])
+
+  @@map("comments")
+}
+
+model Likes {
+  id         String   @id @default(uuid())
+  created_at DateTime @default(now())
+  user_id    String
+
+  post    Post?   @relation(fields: [post_id], references: [id])
+  post_id String?
+
+  @@map("likes")
 }
