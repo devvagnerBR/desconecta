@@ -6,7 +6,8 @@
   "scripts": {
     "dev": "tsx --watch src/server.ts --exit-child",
     "start": "node build/server.js",
-    "build": "tsup src --out-dir build"
+    "build": "tsup src --out-dir build",
+    "studio": "npx prisma studio"
   },
   "keywords": [],
   "author": "devvagnerBR",

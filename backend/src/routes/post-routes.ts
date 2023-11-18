@@ -9,5 +9,8 @@ export const postRoutes = async ( app: FastifyInstance ) => {
     app.addHook( 'onRequest', verifyJWT )
 
     app.get( '/post', post.posts )
+    app.post( '/post', post.create )
+    app.post( '/post/comment', post.createComment )
+
 
 }

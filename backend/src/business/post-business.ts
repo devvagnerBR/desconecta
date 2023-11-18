@@ -15,5 +15,27 @@ export class POST_BUSINESS {
         return posts
     }
 
+    async create( content: string, userId: string, type?: "PUBLIC" | "COURSE", ) {
+        await this.postDatabase.create( { content, type }, userId )
+    }
+
+    async createComment( content: string, postId: string, userId: string ) {
+
+        const postExist = await this.postDatabase.getPostById( postId )
+        if ( !postExist ) throw new CustomError( 404, "Post não encontrado" )
+
+        await this.postDatabase.createComment( { content }, postId, userId )
+    }
+
+    async createAnswer( content: string, commentId: string, userId: string ) {
+
+        const postExist = await this.postDatabase.getPostById( commentId )
+        if ( !postExist ) throw new CustomError( 404, "Post não encontrado" )
+
+        const commentExist = await this.postDatabase.getCommentById( commentId )
+        if ( !commentExist ) throw new CustomError( 404, "Comentário não encontrado" )
+
+        await this.postDatabase.createAnswer( { content }, commentId, userId )
+    }
 
 }

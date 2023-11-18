@@ -1,5 +1,5 @@
 import { PRISMA } from "@/libs/prisma";
-import { Post } from "@prisma/client";
+import { Post, Prisma } from "@prisma/client";
 
 export class POST_DATABASE {
 
@@ -9,9 +9,10 @@ export class POST_DATABASE {
             where: {
                 type
             },
+
             orderBy: { created_at: 'desc' },
             include: {
-                user: {
+                author: {
                     select: { avatar: true, username: true, email: true, id: true }
                 },
                 comments: {
@@ -20,18 +21,64 @@ export class POST_DATABASE {
                         id: true,
                         content: true,
                         created_at: true,
+                        answers: true,
                         user: { select: { username: true, avatar: true } }
                     }
 
                 },
-                likes: { select: { user_id: true } },
+                likes: { select: { user_id: true } }
             }
         } )
 
-        const users_liked_id = posts.map( post => post.likes.map( like => like.user_id ) )
-        return posts.map( post => ( {
-            ...post,
-            likes: users_liked_id.flat( 2 )
-        } ) )
+        return posts
+    }
+
+    async create( data: Prisma.PostCreateInput, userId: string ) {
+
+        await PRISMA.post.create( {
+            data: {
+                content: data.content,
+                type: data.type ?? undefined,
+                author_id: userId,
+            }
+        } )
+    }
+
+    async createComment( data: Prisma.CommentCreateInput, postId: string, userId: string ) {
+        await PRISMA.comment.create( {
+            data: {
+                content: data.content,
+                post_id: postId,
+                author_id: userId
+            }
+        } )
+    }
+
+    async createAnswer( data: Prisma.AnswerCreateInput, commentId: string, userId: string ) {
+
+        await PRISMA.answer.create( {
+            data: {
+                content: data.content,
+                comment_id: commentId,
+                author_id: userId
+            }
+        } )
+    }
+
+    async getCommentById( commentId: string ) {
+
+        const comment = await PRISMA.comment.findUnique( {
+            where: { id: commentId }
+        } )
+
+        return comment
+    }
+
+    async getPostById( postId: string ) {
+        const post = await PRISMA.post.findUnique( {
+            where: { id: postId }
+        } )
+
+        return post
     }
 }
