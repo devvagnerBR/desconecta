@@ -18,7 +18,6 @@ model User {
   course     Course?   @relation(fields: [course_id], references: [id])
   Comment    Comment[]
   Post       Post[]
-  Answer     Answer[]
 
   @@map("users")
 }
@@ -40,30 +39,28 @@ enum PostType {
 }
 
 model Post {
-  id         String    @id @default(uuid())
-  content    String
-  created_at DateTime  @default(now())
-  type       PostType? @default(PUBLIC)
-
-  author_id String
-  author    User?     @relation(fields: [author_id], references: [id])
-  comments  Comment[]
-  likes     Likes[]
+  id            String    @id @default(uuid())
+  content       String
+  created_at    DateTime  @default(now())
+  type          PostType? @default(PUBLIC)
+  author_id     String
+  author        User?     @relation(fields: [author_id], references: [id])
+  comments      Comment[]
+  likes         Likes[]
+  its_published Boolean   @default(true)
 
   @@map("posts")
 }
 
 model Comment {
   id         String   @id @default(uuid())
-  author_id  String
   content    String
+  post_id    String
+  author_id  String
+  author     User?    @relation(fields: [author_id], references: [id])
+  Post       Post?    @relation(fields: [post_id], references: [id])
+  likes      Likes[]
   created_at DateTime @default(now())
-
-  post_id String
-  user    User?  @relation(fields: [author_id], references: [id])
-
-  Post    Post?    @relation(fields: [post_id], references: [id])
-  answers Answer[]
 
   @@map("comments")
 }
@@ -72,27 +69,10 @@ model Likes {
   id         String   @id @default(uuid())
   created_at DateTime @default(now())
   user_id    String
-
-  post    Post?   @relation(fields: [post_id], references: [id])
-  post_id String?
-
-  Answer    Answer? @relation(fields: [answer_id], references: [id])
-  answer_id String?
+  post       Post?    @relation(fields: [post_id], references: [id])
+  post_id    String?
+  comments   Comment? @relation(fields: [comment_id], references: [id])
+  comment_id String?
 
   @@map("likes")
-}
-
-model Answer {
-  id String @id @default(uuid())
-
-  comment_id String?
-  author_id  String
-  content    String
-  created_at DateTime @default(now())
-  status     Boolean  @default(true)
-  likes      Likes[]
-  user       User?    @relation(fields: [author_id], references: [id])
-  comment    Comment? @relation(fields: [comment_id], references: [id])
-
-  @@map("answers")
 }

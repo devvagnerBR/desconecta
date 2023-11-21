@@ -60,7 +60,6 @@ export const USER_CONTROLLER = async () => {
         } ).send( { token } )
     }
 
-
     const profile = async ( req: FastifyRequest, res: FastifyReply ) => {
 
         const userId = req.user.sub as string;

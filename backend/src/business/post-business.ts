@@ -9,7 +9,7 @@ export class POST_BUSINESS {
         private postDatabase: POST_DATABASE
     ) { }
 
-    async posts( type?: 'PUBLIC' | 'COURSE' ): Promise<Post[] | null> {
+    async posts( type?: 'PUBLIC' | 'COURSE' ) {
         const posts = await this.postDatabase.posts( type )
         if ( !Array.isArray( posts ) ) throw new CustomError( 404, "posts não encontrados" )
         return posts
@@ -19,23 +19,9 @@ export class POST_BUSINESS {
         await this.postDatabase.create( { content, type }, userId )
     }
 
+
     async createComment( content: string, postId: string, userId: string ) {
-
-        const postExist = await this.postDatabase.getPostById( postId )
-        if ( !postExist ) throw new CustomError( 404, "Post não encontrado" )
-
         await this.postDatabase.createComment( { content }, postId, userId )
-    }
-
-    async createAnswer( content: string, commentId: string, userId: string ) {
-
-        const postExist = await this.postDatabase.getPostById( commentId )
-        if ( !postExist ) throw new CustomError( 404, "Post não encontrado" )
-
-        const commentExist = await this.postDatabase.getCommentById( commentId )
-        if ( !commentExist ) throw new CustomError( 404, "Comentário não encontrado" )
-
-        await this.postDatabase.createAnswer( { content }, commentId, userId )
     }
 
 }

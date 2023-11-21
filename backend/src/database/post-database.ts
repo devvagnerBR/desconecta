@@ -3,34 +3,48 @@ import { Post, Prisma } from "@prisma/client";
 
 export class POST_DATABASE {
 
-    async posts( type: 'PUBLIC' | 'COURSE' = "PUBLIC" ): Promise<Post[] | null> {
+    async posts( type: 'PUBLIC' | 'COURSE' = "PUBLIC" ) {
 
         const posts = await PRISMA.post.findMany( {
-            where: {
-                type
-            },
-
-            orderBy: { created_at: 'desc' },
+            where: { its_published: true, type },
             include: {
                 author: {
-                    select: { avatar: true, username: true, email: true, id: true }
+                    select: {
+                        id: true, username: true, email: true, avatar: true,
+                        course: { select: { name: true } }
+                    }
                 },
                 comments: {
-                    select: {
-                        author_id: true,
-                        id: true,
-                        content: true,
-                        created_at: true,
-                        answers: true,
-                        user: { select: { username: true, avatar: true } }
-                    }
+                    include: {
+                        author: {
+                            select: {
+                                id: true, username: true, email: true, avatar: true,
 
+                            }
+                        },
+                        likes: { select: { user_id: true } }
+                    }
                 },
-                likes: { select: { user_id: true } }
-            }
+                likes: {
+                    select: {
+                        user_id: true,
+
+                    }
+                }
+            },
+
         } )
 
-        return posts
+        const postsWithLikesInArrayOfIds = posts.map( post => ( {
+            ...post,
+            comments: post.comments.map( comment => ( {
+                ...comment,
+                likes: comment.likes.map( like => like.user_id )
+            } ) ),
+            likes: post.likes.map( like => like.user_id )
+        } ) )
+
+        return postsWithLikesInArrayOfIds
     }
 
     async create( data: Prisma.PostCreateInput, userId: string ) {
@@ -52,26 +66,6 @@ export class POST_DATABASE {
                 author_id: userId
             }
         } )
-    }
-
-    async createAnswer( data: Prisma.AnswerCreateInput, commentId: string, userId: string ) {
-
-        await PRISMA.answer.create( {
-            data: {
-                content: data.content,
-                comment_id: commentId,
-                author_id: userId
-            }
-        } )
-    }
-
-    async getCommentById( commentId: string ) {
-
-        const comment = await PRISMA.comment.findUnique( {
-            where: { id: commentId }
-        } )
-
-        return comment
     }
 
     async getPostById( postId: string ) {
