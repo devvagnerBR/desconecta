@@ -22,6 +22,22 @@ export class USER_DATABASE {
 
     }
 
+    async profile( userId: string ) {
+
+        const user = await PRISMA.user.findUnique( {
+            where: { id: userId },
+            include: {
+                course: true,
+            }
+
+        } )
+
+
+        return user
+
+
+    }
+
     async findByEmail( email: string ): Promise<User | null> {
         const user = await PRISMA.user.findUnique( { where: { email } } )
         return user;
@@ -37,19 +53,14 @@ export class USER_DATABASE {
         return user;
     }
 
-    async profile( userId: string ) {
-
-        const user = await PRISMA.user.findUnique( {
-            where: { id: userId },
-            include: {
-                course: true,
+    async update( userId: string, data: Prisma.UserUpdateInput ) {
+        await PRISMA.user.update( {
+            where: { id: userId }, data: {
+                email: data.email,
+                username: data.username,
+                avatar: data.avatar,
+                password: data.password,
             }
-
         } )
-
-
-        return user
-
-
     }
 }

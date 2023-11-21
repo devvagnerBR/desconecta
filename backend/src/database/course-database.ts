@@ -9,5 +9,4 @@ export class COURSE_DATABASE {
         return course;
     }
 
-
 }

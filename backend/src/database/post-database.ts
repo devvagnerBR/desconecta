@@ -1,4 +1,3 @@
-import { CustomError } from "@/entities/custom-error";
 import { PRISMA } from "@/libs/prisma";
 import { Prisma } from "@prisma/client";
 
@@ -58,11 +57,10 @@ export class POST_DATABASE {
         } )
     }
 
-    async getPostById( postId: string ) {
-        const post = await PRISMA.post.findUnique( {
-            where: { id: postId }
+    async markPostAsDeleted( postId: string ) {
+        await PRISMA.post.update( {
+            where: { id: postId }, data: { its_published: false }
         } )
-        return post
     }
 
     async createComment( data: Prisma.CommentCreateInput, postId: string, userId: string ) {
@@ -73,6 +71,11 @@ export class POST_DATABASE {
                 author_id: userId
             }
         } )
+    }
+
+    async deleteComment( commentId: string ) {
+        await PRISMA.comment.delete( { where: { id: commentId } } )
+
     }
 
     async toggleLike( userId: string, itemId: string ) {
@@ -133,12 +136,6 @@ export class POST_DATABASE {
         }
     }
 
-    async markPostAsDeleted( postId: string ) {
-        await PRISMA.post.update( {
-            where: { id: postId }, data: { its_published: false }
-        } )
-    }
-
     async getCommentById( commentId: string ) {
         const comment = await PRISMA.comment.findUnique( {
             where: { id: commentId }
@@ -146,10 +143,10 @@ export class POST_DATABASE {
         return comment
     }
 
-    async deleteComment( commentId: string ) {
-        await PRISMA.comment.delete( { where: { id: commentId } } )
-
+    async getPostById( postId: string ) {
+        const post = await PRISMA.post.findUnique( {
+            where: { id: postId }
+        } )
+        return post
     }
-
-
 }

@@ -75,10 +75,37 @@ export const USER_CONTROLLER = async () => {
 
     }
 
+    const update = async ( req: FastifyRequest, res: FastifyReply ) => {
+
+        const userId = req.user.sub as string;
+
+        const registerBodySchema = z.object( {
+            username:
+                z.string( { required_error: 'Username é obrigatório' } )
+                    .min( 3, " Username deve ter no mínimo 3 caracteres" ).optional(),
+            email:
+                z.string( { required_error: "Email é obrigatório" } )
+                    .email( "Email inválido" ).optional(),
+            password:
+                z.string( { required_error: "Senha é obrigatório" } )
+                    .min( 6, "Senha deve ter no mínimo 6 caracteres" ).optional(),
+            avatar: z.string().optional(),
+        } );
+
+        const { avatar, email, username, password } = registerBodySchema.parse( req.body )
+        if ( !avatar && !email && !username && !password ) return res.status( 400 ).send( { message: "Nenhum dado foi enviado" } )
+
+        await userFactory.update( userId, { avatar, email, username, password } )
+
+        return res.status( 200 ).send( { message: "Usuário atualizado com sucesso" } )
+
+    }
+
     return {
         create,
         authenticate,
-        profile
+        profile,
+        update
     }
 
 }
