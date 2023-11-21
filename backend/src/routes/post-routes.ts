@@ -12,5 +12,7 @@ export const postRoutes = async ( app: FastifyInstance ) => {
     app.post( '/post', post.createPost )
     app.post( '/post/:postId/comment', post.createComment )
     app.post( '/post/:itemId/like', post.toggleLike )
+    app.patch( '/post/:postId/delete', post.markPostAsDeleted )
+
 
 }

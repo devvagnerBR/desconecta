@@ -25,4 +25,12 @@ export class POST_BUSINESS {
         await this.postDatabase.toggleLike( userId, itemId )
     }
 
+    async markPostAsDeleted( postId: string ) {
+
+        const post = await this.postDatabase.getPostById( postId )
+        if ( !post ) throw new CustomError( 404, "Post não encontrado" )
+
+        await this.postDatabase.markPostAsDeleted( postId )
+    }
+
 }

@@ -71,10 +71,23 @@ export const POST_CONTROLLER = async () => {
 
     }
 
+    const markPostAsDeleted = async ( req: FastifyRequest, res: FastifyReply ) => {
+
+        const markPostAsDeletedParamsSchema = z.object( {
+            postId: z.string( { required_error: "Id da postagem é obrigatório" } )
+        } )
+
+        const { postId } = markPostAsDeletedParamsSchema.parse( req.params )
+
+        await postFactory.markPostAsDeleted( postId )
+        return res.status( 200 ).send( { message: "Post deletado com sucesso" } )
+    }
+
     return {
         getPosts,
         createPost,
         createComment,
-        toggleLike
+        toggleLike,
+        markPostAsDeleted
     }
 }

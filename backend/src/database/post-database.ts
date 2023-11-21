@@ -132,4 +132,10 @@ export class POST_DATABASE {
         }
     }
 
+    async markPostAsDeleted( postId: string ) {
+        await PRISMA.post.update( {
+            where: { id: postId }, data: { its_published: false }
+        } )
+    }
+
 }
