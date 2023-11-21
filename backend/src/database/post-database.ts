@@ -1,9 +1,9 @@
 import { PRISMA } from "@/libs/prisma";
-import { Post, Prisma } from "@prisma/client";
+import { Prisma } from "@prisma/client";
 
 export class POST_DATABASE {
 
-    async posts( type: 'PUBLIC' | 'COURSE' = "PUBLIC" ) {
+    async getPosts( type: 'PUBLIC' | 'COURSE' = "PUBLIC" ) {
 
         const posts = await PRISMA.post.findMany( {
             where: { its_published: true, type },
@@ -28,7 +28,6 @@ export class POST_DATABASE {
                 likes: {
                     select: {
                         user_id: true,
-
                     }
                 }
             },
@@ -47,7 +46,7 @@ export class POST_DATABASE {
         return postsWithLikesInArrayOfIds
     }
 
-    async create( data: Prisma.PostCreateInput, userId: string ) {
+    async createPost( data: Prisma.PostCreateInput, userId: string ) {
 
         await PRISMA.post.create( {
             data: {
@@ -56,6 +55,13 @@ export class POST_DATABASE {
                 author_id: userId,
             }
         } )
+    }
+
+    async getPostById( postId: string ) {
+        const post = await PRISMA.post.findUnique( {
+            where: { id: postId }
+        } )
+        return post
     }
 
     async createComment( data: Prisma.CommentCreateInput, postId: string, userId: string ) {
@@ -68,11 +74,62 @@ export class POST_DATABASE {
         } )
     }
 
-    async getPostById( postId: string ) {
-        const post = await PRISMA.post.findUnique( {
-            where: { id: postId }
+    async toggleLike( userId: string, itemId: string ) {
+
+        const ItsComment = await PRISMA.comment.findUnique( {
+            where: { id: itemId }
         } )
 
-        return post
+        if ( ItsComment ) {
+            const alreadyMarkedAsLiked = await PRISMA.likes.findFirst( {
+                where: {
+                    comment_id: itemId,
+                    user_id: userId
+                }
+            } )
+
+            if ( alreadyMarkedAsLiked ) {
+                await PRISMA.likes.delete( {
+                    where: {
+                        id: alreadyMarkedAsLiked.id
+                    }
+                } )
+                return
+            }
+
+            await PRISMA.likes.create( {
+                data: {
+                    comment_id: itemId,
+                    user_id: userId
+                }
+            } )
+            return
+        } else {
+            const alreadyMarkedAsLiked = await PRISMA.likes.findFirst( {
+                where: {
+                    post_id: itemId,
+                    user_id: userId
+                }
+            } )
+
+            if ( alreadyMarkedAsLiked ) {
+                await PRISMA.likes.delete( {
+                    where: {
+                        id: alreadyMarkedAsLiked.id
+                    }
+                } )
+                return
+            }
+
+            await PRISMA.likes.create( {
+                data: {
+                    post_id: itemId,
+                    user_id: userId
+                }
+            } )
+            return
+
+        }
     }
+
 }
