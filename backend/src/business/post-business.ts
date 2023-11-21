@@ -33,4 +33,15 @@ export class POST_BUSINESS {
         await this.postDatabase.markPostAsDeleted( postId )
     }
 
+    async deleteComment( commentId: string, userId: string ) {
+
+        const comment = await this.postDatabase.getCommentById( commentId )
+        if ( !comment ) throw new CustomError( 404, "Comentário não encontrado" )
+
+        if ( comment.author_id !== userId ) throw new CustomError( 401, "Você não tem permissão para deletar este comentário" )
+
+        await this.postDatabase.deleteComment( commentId )
+
+    }
+
 }

@@ -42,7 +42,7 @@ export class USER_DATABASE {
         const user = await PRISMA.user.findUnique( {
             where: { id: userId },
             include: {
-                course: true
+                course: true,
             }
 
         } )

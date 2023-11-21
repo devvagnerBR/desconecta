@@ -1,3 +1,4 @@
+import { CustomError } from "@/entities/custom-error";
 import { PRISMA } from "@/libs/prisma";
 import { Prisma } from "@prisma/client";
 
@@ -22,7 +23,7 @@ export class POST_DATABASE {
 
                             }
                         },
-                        likes: { select: { user_id: true } }
+                        likes: { select: { user_id: true } },
                     }
                 },
                 likes: {
@@ -137,5 +138,18 @@ export class POST_DATABASE {
             where: { id: postId }, data: { its_published: false }
         } )
     }
+
+    async getCommentById( commentId: string ) {
+        const comment = await PRISMA.comment.findUnique( {
+            where: { id: commentId }
+        } )
+        return comment
+    }
+
+    async deleteComment( commentId: string ) {
+        await PRISMA.comment.delete( { where: { id: commentId } } )
+
+    }
+
 
 }

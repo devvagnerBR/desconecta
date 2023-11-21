@@ -83,11 +83,25 @@ export const POST_CONTROLLER = async () => {
         return res.status( 200 ).send( { message: "Post deletado com sucesso" } )
     }
 
+    const deleteComment = async ( req: FastifyRequest, res: FastifyReply ) => {
+
+        const deleteCommentParamsSchema = z.object( {
+            commentId: z.string( { required_error: "Id do comentário é obrigatório" } )
+        } )
+
+        const { commentId } = deleteCommentParamsSchema.parse( req.params )
+        const userId = req.user.sub
+
+        await postFactory.deleteComment( commentId, userId )
+        return res.status( 200 ).send( { message: "Comentário deletado com sucesso" } )
+    }
+
     return {
         getPosts,
         createPost,
         createComment,
         toggleLike,
-        markPostAsDeleted
+        markPostAsDeleted,
+        deleteComment
     }
 }
