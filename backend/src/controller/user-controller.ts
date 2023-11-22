@@ -28,8 +28,17 @@ export const USER_CONTROLLER = async () => {
         if ( !registerBody.success ) return res.status( 400 ).send( registerBody.error.format() )
 
         await userFactory.create( registerBody.data )
+        const userId = await userFactory.authenticate( { email: registerBody.data.email, password: registerBody.data.password } );
 
-        return res.status( 201 ).send( { message: "Usuário criado com sucesso" } )
+        const token = await res.jwtSign( { sub: userId } );
+        const refreshToken = await res.jwtSign( { sub: userId }, { expiresIn: '7d' } );
+
+        return res.setCookie( 'refreshToken', refreshToken, {
+            path: '/',
+            secure: true,
+            sameSite: true,
+            httpOnly: true
+        } ).status( 201 ).send( { token } )
 
     }
 
