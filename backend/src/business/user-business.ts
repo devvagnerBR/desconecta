@@ -112,4 +112,12 @@ export class USER_BUSINESS {
 
         await this.userDatabase.validateAccount( userId );
     }
+
+    async getUserPosts( userId: string ) {
+
+        const posts = await this.userDatabase.getUserPosts( userId )
+        if ( !Array.isArray( posts ) ) throw new CustomError( 404, "posts não encontrados" )
+        return posts
+
+    }
 }

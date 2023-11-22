@@ -102,6 +102,7 @@ export const POST_CONTROLLER = async () => {
         createComment,
         toggleLike,
         markPostAsDeleted,
-        deleteComment
+        deleteComment,
+
     }
 }

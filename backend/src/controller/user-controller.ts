@@ -131,13 +131,23 @@ export const USER_CONTROLLER = async () => {
         return res.status( 200 ).send( { message: "Conta validada com sucesso" } )
     }
 
+    const getUserPosts = async ( req: FastifyRequest, res: FastifyReply ) => {
+
+        const userId = req.user.sub
+        const posts = await userFactory.getUserPosts( userId )
+
+        return res.status( 200 ).send( posts )
+
+    }
+
     return {
         create,
         authenticate,
         profile,
         update,
         sendCodeValidation,
-        validateAccount
+        validateAccount,
+        getUserPosts
     }
 
 }

@@ -102,6 +102,45 @@ export class USER_DATABASE {
         } )
     }
 
+    async getUserPosts( userId: string ) {
+        const posts = await PRISMA.post.findMany( {
+            where: { author_id: userId, its_published: true },
+            include: {
+                author: {
+                    select: {
+                        id: true, username: true, email: true, avatar: true,
+                        course: { select: { name: true } }
+                    }
+                },
+                comments: {
+                    include: {
+                        author: {
+                            select: {
+                                id: true, username: true, email: true, avatar: true,
 
+                            }
+                        },
+                        likes: { select: { user_id: true } },
+                    }
+                },
+                likes: {
+                    select: {
+                        user_id: true,
+                    }
+                }
+            }
+        } )
+
+        const postsWithLikesInArrayOfIds = posts.map( post => ( {
+            ...post,
+            comments: post.comments.map( comment => ( {
+                ...comment,
+                likes: comment.likes.map( like => like.user_id )
+            } ) ),
+            likes: post.likes.map( like => like.user_id )
+        } ) )
+
+        return postsWithLikesInArrayOfIds
+    }
 
 }
