@@ -1,11 +1,13 @@
 import { PRISMA } from "@/libs/prisma";
 import { Prisma, User } from "@prisma/client";
+import moment from 'moment-timezone';
+
 
 interface CreateUserRequest extends Prisma.UserCreateInput { course_id: number }
 
 export class USER_DATABASE {
 
-    async create( data: CreateUserRequest ): Promise<void> {
+    async create( data: CreateUserRequest, code: string ): Promise<void> {
         const user = await PRISMA.user.create( {
             data: {
                 username: data.username,
@@ -19,7 +21,46 @@ export class USER_DATABASE {
             }
         } )
 
+        await PRISMA.authenticateAccount.create( {
+            data: {
+                user_id: user.id,
+                code
+            }
 
+        } )
+
+
+    }
+
+    async getValidationCode( userId: string ) {
+        const code = await PRISMA.authenticateAccount.findFirst( {
+            where: { user_id: userId }
+        } )
+
+        return code
+    }
+
+    async refreshCode( userId: string, code: string ) {
+        const auth = await PRISMA.authenticateAccount.findFirst( {
+            where: { user_id: userId }
+        } )
+
+        if ( !auth ) throw new Error( "código de validação não encontrado" )
+        const expires_at = moment().utcOffset( -180 ).add( 5, 'minutes' ).toDate();
+
+        await PRISMA.authenticateAccount.update( {
+            where: { id: auth.id },
+            data: { expires_at, code }
+        } )
+    }
+
+    async validateAccount( userId: string ) {
+        await PRISMA.user.update( {
+            where: { id: userId },
+            data: { is_verified: true }
+        } )
+
+        await PRISMA.authenticateAccount.deleteMany( { where: { user_id: userId } } )
     }
 
     async profile( userId: string ) {
@@ -32,10 +73,7 @@ export class USER_DATABASE {
 
         } )
 
-
         return user
-
-
     }
 
     async findByEmail( email: string ): Promise<User | null> {
@@ -63,4 +101,7 @@ export class USER_DATABASE {
             }
         } )
     }
+
+
+
 }

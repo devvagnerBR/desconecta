@@ -101,11 +101,34 @@ export const USER_CONTROLLER = async () => {
 
     }
 
+    const sendCodeValidation = async ( req: FastifyRequest, res: FastifyReply ) => {
+        const userId = req.user.sub as string;
+        await userFactory.sendCodeValidation( userId )
+        return res.status( 200 ).send( { message: "Código enviado com sucesso" } )
+    }
+
+    const validateAccount = async ( req: FastifyRequest, res: FastifyReply ) => {
+
+        const validateCodeSchema = z.object( {
+            code: z.string( { required_error: "Código é obrigatório" } )
+                .min( 6, "Código deve ter 6 caracteres" )
+                .max( 6, "Código deve ter 6 caracteres" )
+        } )
+
+        const userId = req.user.sub as string;
+        const { code } = validateCodeSchema.parse( req.body )
+
+        await userFactory.validateAccount( userId, code )
+        return res.status( 200 ).send( { message: "Conta validada com sucesso" } )
+    }
+
     return {
         create,
         authenticate,
         profile,
-        update
+        update,
+        sendCodeValidation,
+        validateAccount
     }
 
 }

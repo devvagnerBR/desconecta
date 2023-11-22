@@ -4,6 +4,8 @@ import *  as bcrypt from 'bcryptjs';
 import { env } from '@/env';
 import { CustomError } from '@/entities/custom-error';
 import { COURSE_DATABASE } from '@/database/course-database';
+import { ValidateAccount } from '@/libs/nodemailer';
+
 
 interface RegisterRequest {
     username: string;
@@ -37,14 +39,17 @@ export class USER_BUSINESS {
         const emailExists = await this.userDatabase.findByEmail( email )
         if ( emailExists ) throw new CustomError( 409, "email já cadastrado" )
 
+        const nodeMailer = new ValidateAccount()
+        const code = await nodeMailer.generateCode();
+
         const data: RegisterRequest = {
             username,
             email,
             password: passwordHash,
-            course_id
+            course_id,
         }
 
-        await this.userDatabase.create( data )
+        await this.userDatabase.create( data, code )
     }
 
     async authenticate( data: AuthenticateRequest ): Promise<string> {
@@ -71,5 +76,40 @@ export class USER_BUSINESS {
         if ( !user ) throw new CustomError( 404, "usuário não encontrado" )
 
         await this.userDatabase.update( userId, data )
+    }
+
+    async sendCodeValidation( userId: string ) {
+
+        const user = await this.userDatabase.findById( userId )
+        if ( !user ) throw new CustomError( 404, "usuário não encontrado" )
+        if ( !user.email ) throw new CustomError( 404, "usuário não possui email cadastrado" )
+        if ( user.is_verified ) throw new CustomError( 409, "email já validado" )
+
+        const auth = await this.userDatabase.getValidationCode( userId );
+        if ( !auth ) throw new CustomError( 404, "código de validação não encontrado" )
+
+        const nodeMailer = new ValidateAccount()
+
+        if ( auth.expires_at === null || auth.expires_at && auth.expires_at && auth.expires_at < new Date() ) {
+            const code = await nodeMailer.generateCode();
+            await this.userDatabase.refreshCode( userId, code )
+            await nodeMailer.sendCode( user.email, code )
+        } else {
+            await nodeMailer.sendCode( user.email, auth.code )
+        }
+    }
+
+    async validateAccount( userId: string, code: string ) {
+
+        const user = await this.userDatabase.findById( userId )
+        if ( !user ) throw new CustomError( 404, "usuário não encontrado" )
+        if ( !user.email ) throw new CustomError( 404, "usuário não possui email cadastrado" )
+        if ( user.is_verified ) throw new CustomError( 409, "conta já validado" )
+
+        const confirmCode = await this.userDatabase.getValidationCode( userId );
+        if ( !confirmCode ) throw new CustomError( 404, "código de validação não encontrado" )
+        if ( confirmCode.code !== code ) throw new CustomError( 401, "código de validação inválido" )
+
+        await this.userDatabase.validateAccount( userId );
     }
 }

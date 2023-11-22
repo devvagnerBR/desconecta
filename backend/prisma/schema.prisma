@@ -8,16 +8,17 @@ datasource db {
 }
 
 model User {
-  id         String    @id @default(uuid())
-  username   String    @unique
-  email      String    @unique
-  created_at DateTime  @default(now())
-  password   String
-  avatar     String?
-  course_id  Int?
-  course     Course?   @relation(fields: [course_id], references: [id])
-  Comment    Comment[]
-  Post       Post[]
+  id          String    @id @default(uuid())
+  username    String    @unique
+  email       String    @unique
+  created_at  DateTime  @default(now())
+  is_verified Boolean   @default(false)
+  password    String
+  avatar      String?
+  course_id   Int?
+  course      Course?   @relation(fields: [course_id], references: [id])
+  Comment     Comment[]
+  Post        Post[]
 
   @@map("users")
 }
@@ -75,4 +76,13 @@ model Likes {
   comment_id String?
 
   @@map("likes")
+}
+
+model AuthenticateAccount {
+  id         String    @id @default(uuid())
+  user_id    String
+  expires_at DateTime? // 5min
+  code       String
+
+  @@map("authenticate_account")
 }

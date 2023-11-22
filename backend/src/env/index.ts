@@ -6,7 +6,10 @@ const envSchema = z.object( {
     PORT: z.coerce.number().default( 3333 ),
     JWT_EXPIRES_IN: z.string(),
     JWT_SECRET: z.string(),
-    BCRYPT_SALT: z.coerce.number().min( 6 ).max( 12 )
+    BCRYPT_SALT: z.coerce.number().min( 6 ).max( 12 ),
+    NODEMAILER_EMAIL: z.string().email(),
+    NODEMAILER_PASSWORD: z.string(),
+    NODEMAILER_HASH: z.string(),
 } )
 
 const _env = envSchema.safeParse( process.env )

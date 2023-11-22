@@ -27,9 +27,12 @@
     "@fastify/jwt": "^7.2.3",
     "@prisma/client": "^5.6.0",
     "@types/bcryptjs": "^2.4.6",
+    "@types/nodemailer": "^6.4.14",
     "bcryptjs": "^2.4.3",
     "dotenv": "^16.3.1",
     "fastify": "^4.24.3",
+    "moment-timezone": "^0.5.43",
+    "nodemailer": "^6.9.7",
     "zod": "^3.22.4"
   }
 }
