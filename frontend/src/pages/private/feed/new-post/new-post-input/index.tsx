@@ -1,13 +1,17 @@
 import { useModalContext } from "@/context/modal-context"
+import { usePostContext } from "@/context/post-context"
 import { PostType } from "@/requests/post-requests"
 
 interface StatePostType {
     setPostType: ( postType: PostType ) => void
 }
 
-export const NewPostInput = ( { setPostType }: StatePostType ) => {
+export const NewPostInput = () => {
 
     const { newPost } = useModalContext()
+    const { setPostType } = usePostContext()
+
+
 
     return (
         <div

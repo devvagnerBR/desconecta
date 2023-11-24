@@ -33,5 +33,5 @@ export interface PostProps {
         }
     }[]
 
-    likes: any[]
+    likes: string[]
 }

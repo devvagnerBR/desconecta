@@ -8,6 +8,8 @@ import { NewComment } from './new-comment'
 import { Comments } from './comments'
 import { momentJs } from '@/libs/moment-js'
 import { PostProps } from '@/types/post'
+import { PostBusiness } from './posts-business'
+import { useUserContext } from '@/context/user-context'
 
 export interface CardPostProps {
     post: PostProps
@@ -16,11 +18,16 @@ export interface CardPostProps {
 export const CardPost = ( { post }: CardPostProps ) => {
 
     const author = post?.author
-    const comments = post?.comments
-    const likes = post?.likes
+    const { data: user } = useUserContext()
     const { size } = getPageWidth()
 
+    const {
+        handleToggleLike
+    } = PostBusiness()
+
     const [showComentInput, setShowComentInput] = React.useState( false )
+
+    const isLiked = user && post.likes.includes( user?.id )
 
     return (
         <section className='border bg-secondary-50 p-4 rounded-sm'>
@@ -56,10 +63,15 @@ export const CardPost = ( { post }: CardPostProps ) => {
                 </p>
             </section>
             <nav className='flex items-center max-sm:gap-16 gap-8 h-full mt-2 border-t pt-4'>
-                <div className='flex items-center gap-2 cursor-pointer rounded-md  px-2 py-1'>
-                    <Icon.ThumbsUp size={24} className='fill-secondary-600 max-sm:w-6 max-sm:h-6 transform scale-x-[-1]' />
-                    <p className='text-secondary-600 max-sm:hidden'>Gostei</p>
+
+                <div
+                    onClick={() => handleToggleLike( post.id )}
+                    className='flex items-center gap-2 cursor-pointer rounded-md  px-2 py-1'>
+                    <Icon.ThumbsUp size={24} className={`${isLiked ? "fill-primary-400" : "fill-secondary-600"}  max-sm:w-6 max-sm:h-6 transform scale-x-[-1]`} />
+                    {!isLiked ? <p className='text-secondary-600 max-sm:hidden'>Curtir</p> : <p className={` text-primary-400 max-sm:hidden`}>Curtido</p>}
                 </div>
+
+
                 <div
                     onClick={() => setShowComentInput( true )}
                     className='flex items-center gap-2 cursor-pointer rounded-md px-2 py-1 '>

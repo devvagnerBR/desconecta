@@ -1,14 +1,21 @@
 import { momentJs } from '@/libs/moment-js'
 import { PostProps } from '@/types/post'
 import * as Icon from '@phosphor-icons/react'
+import { PostBusiness } from '../posts-business'
+import { useUserContext } from '@/context/user-context'
 export const Comments = ( { post }: { post: PostProps } ) => {
 
     const comments = post?.comments
 
+    const { handleToggleLike } = PostBusiness()
+    const { data: user } = useUserContext()
 
+    //    const isLiked = user && post.likes.includes( user?.id )
     return (
         <section>
             {comments?.map( ( comment ) => {
+
+                const isLiked = user && comment.likes.includes( user?.id )
                 return (
                     <section key={`${comment.author.id}+${comment.created_at}+${Math.random()}`} className=' mt-1 p-2 border rounded-md  flex flex-col items-start gap-2'>
                         <div className='flex gap-2 w-full'>
@@ -29,9 +36,11 @@ export const Comments = ( { post }: { post: PostProps } ) => {
                         <main className='flex flex-wrap   p-2 rounded-md border border-primary-400'>
                             <p style={{ wordBreak: 'break-all' }} className=' flex text-primary-400  flex-wrap'>{comment.content}</p>
                         </main>
-                        <div className='w-full flex items-center gap-2 cursor-pointer'>
-                            <Icon.ThumbsUp className=' fill-secondary-600 transform scale-x-[-1]' />
-                            <p className='text-sm text-secondary-600'>gostei</p>
+                        <div
+                            onClick={() => handleToggleLike( comment.id )}
+                            className='w-fit flex items-center gap-2 cursor-pointer'>
+                            <Icon.ThumbsUp className={` ${isLiked ? "fill-primary-400" : "fill-secondary-600"}  transform scale-x-[-1]`} />
+                            {isLiked ? <p className={` ${isLiked ? "text-primary-400" : "text-secondary-600"} text-sm `}>Curtido</p> : <p className='text-sm text-secondary-600'>Curtir</p>}
                         </div>
                     </section>
                 )

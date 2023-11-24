@@ -7,10 +7,9 @@ interface StatePostType {
     postType: PostType
 }
 
-export const Posts = ( { postType }: StatePostType ) => {
+export const Posts = () => {
 
-    const user = useUserContext()
-    const { posts } = PostBusiness( user.data?.id!, postType )
+    const { posts } = PostBusiness()
 
     return (
         <div className="mt-2 flex flex-col gap-4 max-md:pb-24">

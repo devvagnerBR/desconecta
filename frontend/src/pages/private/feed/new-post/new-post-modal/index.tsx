@@ -11,7 +11,6 @@ export const NewPostModal = () => {
 
     const { data } = useUserContext()
     const { register, contentLength, onSubmit } = newPostModalBusiness()
-
     const { newPost } = useModalContext()
 
 

@@ -35,10 +35,19 @@ export const postRequests = () => {
         } );
     }
 
+    const toggleLike = async ( postId: string ): Promise<void> => {
+        await api.post( `/post/${postId}/like`, {}, {
+            headers: { Authorization: `Bearer ${token}` }
+        } );
+    }
+
+    
+
     return {
         getPosts,
         createPost,
-        createComment
+        createComment,
+        toggleLike
     }
 
 }
