@@ -2,8 +2,10 @@ import { useUserContext } from '@/context/user-context'
 import { Avatar } from '@/components/header/avatar'
 import * as Icon from "@phosphor-icons/react"
 import { newPostModalBusiness } from './new-post-modal-business';
-import { useModal } from '@/hooks/use-modal';
+
 import { useModalContext } from '@/context/modal-context';
+import { PostType } from '@/requests/post-requests';
+import React from 'react';
 
 export const NewPostModal = () => {
 
@@ -13,11 +15,12 @@ export const NewPostModal = () => {
     const { newPost } = useModalContext()
 
 
+
     return (
         <form onSubmit={onSubmit} className='w-screen  max-w-3xl max-h-[320px] max-md:max-h-none h-screen bg-white rounded-sm shadow-sm px-4'>
             <header className='w-full h-16 mt-2 flex items-center justify-between '>
                 <div className='flex gap-2 items-center'>
-                    <Avatar data={data} />
+                    {data && <Avatar data={data} />}
                     <div className='flex flex-col leading-none gap-1'>
                         <p className='text-lg leading-none font-semibold'>
                             <span className='text-primary-400 font-bold text-base leading-none'>@</span>
@@ -28,8 +31,8 @@ export const NewPostModal = () => {
                             <select
                                 {...register( 'type' )}
                                 className="shrink-0 cursor-pointer text-secondary-800 font-light text-sm">
-                                <option value={Number( 0 )}>Global</option>
-                                <option value={Number( 1 )}>Curso</option>
+                                <option value={PostType.PUBLIC}>Global</option>
+                                <option value={PostType.COURSE}>Curso</option>
                             </select>
                         </div>
                     </div>

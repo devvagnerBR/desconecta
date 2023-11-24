@@ -3,6 +3,7 @@ import { PostAuthor, User } from "@/types/user"
 
 export const Avatar = ( { data, size = 12 }: { data: PostAuthor, size?: number } ) => {
 
+    
     return (
         <>
             {data?.avatar ? <div className={`w-${size} relative shrink-0`}>

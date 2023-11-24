@@ -1,8 +1,6 @@
 import { api } from "@/libs/axios";
-import { getCookie, removeCookie, setCookie } from "@/libs/cookies-js";
-import { queryClient } from "@/libs/react-query";
-import { useMutation } from "react-query";
-import { useNavigate } from "react-router-dom";
+import { getCookie } from "@/libs/cookies-js";
+
 
 
 export enum PostType {
@@ -25,6 +23,12 @@ export const postRequests = () => {
         return response.data;
     }
 
+    const createPost = async ( content: string, type: PostType ): Promise<void> => {
+        await api.post( '/post', { content, type }, {
+            headers: { Authorization: `Bearer ${token}` }
+        } );
+    }
+
     const createComment = async ( postId: string, content: string ): Promise<void> => {
         await api.post( `/post/${postId}/comment`, { content }, {
             headers: { Authorization: `Bearer ${token}` }
@@ -33,6 +37,7 @@ export const postRequests = () => {
 
     return {
         getPosts,
+        createPost,
         createComment
     }
 
