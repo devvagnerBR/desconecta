@@ -1,33 +1,29 @@
-import { User } from "@/context/user-context"
-import { userRequests } from "@/requests"
+import { PostType, postRequests } from "@/requests/post-requests"
+import { PostProps } from "@/types/post"
 import { useQuery } from "react-query"
 
-export interface PostProps {
-
-    id: string,
-    content: string,
-    author: User,
-    likes: string[],
-    created_at: string,
-    comments: [
-        {
-            author: User,
-            content: string,
-            created_at: string,
-            id: string
-        }
-    ],
-}
-export const PostBusiness = () => {
 
 
-    const req = userRequests()
+export const PostBusiness = ( userId: string, type?: PostType ) => {
 
-    const { data: posts } = useQuery<PostProps[]>( ['posts'], req.getPosts, {
+    const req = postRequests()
+
+    const { data: posts } = useQuery<PostProps[]>( {
+        queryKey: ["posts", type],
+        queryFn: () => req.getPosts( type ),
         refetchOnWindowFocus: false,
-        staleTime: 1000 * 60 * 10, // 10 minutes,
-        cacheTime: 1000 * 60 * 10, // 10 minutes,
     } )
-    return { posts }
+
+
+    const postsWithIsAuthor = posts?.map( post => {
+        return {
+            ...post, is_author: post.author_id === userId,
+            comments: post.comments.map( comment => {
+                return { ...comment, is_author: comment.author_id === userId }
+            } )
+        }
+    } )
+
+    return { posts: postsWithIsAuthor }
 
 }

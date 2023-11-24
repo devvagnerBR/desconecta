@@ -2,27 +2,13 @@ import React from "react";
 import { getCookie } from "@/libs/cookies-js";
 import { userRequests } from "@/requests";
 import { useQuery } from "react-query";
+import { User } from "@/types/user";
 
-export interface User {
-    id: string,
-    avatar: string,
-    created_at: string,
-    course_id: string,
-    username: string,
-    email: string,
-    course: {
-        id: string,
-        name: string,
-        created_at: string,
-        updated_at: string
-        status: boolean
-    }
-}
 
 interface UserContextProps {
     isLogged: boolean,
     setIsLogged: React.Dispatch<React.SetStateAction<boolean>>
-    data: User
+    data: User | undefined
 }
 
 const UserContext = React.createContext<UserContextProps | null>( null )
@@ -33,11 +19,12 @@ const UserContextProvider = ( { children }: React.PropsWithChildren ) => {
 
     const { getUserProfile } = userRequests()
 
-    const { data } = useQuery<User | any>( ['user'], getUserProfile, {
+    const { data } = useQuery<User>( {
+        queryKey: ["user"],
+        queryFn: getUserProfile,
         refetchOnWindowFocus: false,
         enabled: !!getCookie( "token" )
     } )
-
 
     return (
         <UserContext.Provider value={{ isLogged, setIsLogged, data }}>

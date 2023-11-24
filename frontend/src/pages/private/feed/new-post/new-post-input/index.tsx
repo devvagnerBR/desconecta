@@ -1,6 +1,11 @@
 import { useModalContext } from "@/context/modal-context"
+import { PostType } from "@/requests/post-requests"
 
-export const NewPostInput = () => {
+interface StatePostType {
+    setPostType: ( postType: PostType ) => void
+}
+
+export const NewPostInput = ( { setPostType }: StatePostType ) => {
 
     const { newPost } = useModalContext()
 
@@ -24,12 +29,14 @@ export const NewPostInput = () => {
                 <div className="border-b h-2 w-full " />
                 <div className="shrink-0 items-start h-3 gap-2 flex">
                     <p className="shrink-0 text-xs">Classificar por:</p>
-                    <select className="shrink-0  bg-secondary-200border shadow-sm  text-secondary-800 font-light text-xs">
-                        <option >Global</option>
-                        <option >Curso</option>
+                    <select
+                        onChange={( event ) => setPostType( event.target.value as PostType )}
+                        defaultValue="PUBLIC" className="shrink-0  bg-secondary-200border shadow-sm  text-secondary-800 font-light text-xs">
+                        <option value={PostType.PUBLIC}>Global</option>
+                        <option value={PostType.COURSE}>Curso</option>
                     </select>
                 </div>
             </div>
-        </div>
+        </div >
     )
 }

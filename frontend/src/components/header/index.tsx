@@ -13,7 +13,6 @@ export const Header = () => {
     const { pathname } = useLocation()
 
     const isSessionPage = pathname === '/entrar' || pathname === '/criar-conta'
-
     if ( isSessionPage ) return null
     return (
         <header className={` h-20 flex justify-center items-center`}>
@@ -30,9 +29,9 @@ export const Header = () => {
                     <div className="w-full flex gap-4 h-full items-center justify-end pr-2">
                         <div className="flex flex-col gap-1 shrink-0 no_click">
                             <p className="text-end text-lg leading-none"><span className="text-primary-400 text-base font-bold leading-3">@</span>{data?.username}</p>
-                            <p className="text-primary-400 text-sm leading-none shrink-0 max-sm:text-xs">{textLimit( data?.course?.name, size / 12 )}</p>
+                            <p className="text-primary-400 text-sm leading-none shrink-0 max-sm:text-xs">{textLimit( data?.course?.name ?? "", size / 12 )}</p>
                         </div>
-                        <Avatar data={data} />
+                        {data && <Avatar data={data} />}
                     </div>
                 </div>
             </main>
