@@ -36,11 +36,11 @@ export const CardPost = ( { post }: CardPostProps ) => {
                     <div className="flex flex-col order-1  gap-1 shrink-0 no_click">
                         <div className='flex items-end gap-2'>
                             <p className="text-start text-lg leading-none">{author?.username}</p>
-                            <p className='order-2 text-sm items-end leading-4 text-secondary-600'>
+                            <p className='order-2 text-xs font-light items-end leading-4 text-secondary-600'>
                                 {momentJs( post?.created_at ).fromNow()}</p>
                         </div>
 
-                        <p className="text-primary-400 text-sm leading-none shrink-0 max-sm:text-xs">
+                        <p className="text-secondary-600 text-sm leading-none shrink-0 max-sm:text-xs">
                             {textLimit( author?.course.name, size / 12 )}
                         </p>
                     </div>
@@ -52,35 +52,35 @@ export const CardPost = ( { post }: CardPostProps ) => {
                 </section>
             </header>
             <section className='mt-4 '>
-                <p>{post.content}</p>
+                <p className='text-sm'>{post.content}</p>
             </section>
             <section className='mt-2 flex  gap-4'>
-                <p className='text-secondary-600 font-light text-sm hover:text-blue-600 cursor-pointer'>{post?.likes.length} curtidas</p>
+                <p className='text-secondary-600 font-light text-sm cursor-pointer'>{post?.likes.length} curtidas</p>
                 <p
                     onClick={() => setShowComentInput( true )}
-                    className='text-secondary-600 font-light text-sm cursor-pointer hover:text-blue-600'>
+                    className='text-secondary-600 font-light text-sm cursor-pointer'>
                     {post?.comments.length} comentarios
                 </p>
             </section>
-            <nav className='flex items-center max-sm:gap-16 gap-8 h-full mt-2 border-t pt-4'>
+            <nav className='flex items-center max-sm:gap-16 gap-2 h-full mt-2 border-t pt-2'>
 
                 <div
                     onClick={() => handleToggleLike( post.id )}
-                    className='flex items-center gap-2 cursor-pointer rounded-md  px-2 py-1'>
-                    <Icon.ThumbsUp size={24} className={`${isLiked ? "fill-primary-400" : "fill-secondary-600"}  max-sm:w-6 max-sm:h-6 transform scale-x-[-1]`} />
-                    {!isLiked ? <p className='text-secondary-600 max-sm:hidden'>Curtir</p> : <p className={` text-primary-400 max-sm:hidden`}>Curtido</p>}
+                    className='flex items-center gap-2 cursor-pointer rounded-md py-1'>
+                    <Icon.ThumbsUp size={18} className={`${isLiked ? "fill-primary-400" : "fill-secondary-600"}  max-sm:w-6 max-sm:h-6 transform scale-x-[-1]`} />
+                    {!isLiked ? <p className='text-secondary-600 text-sm max-sm:hidden'>Curtir</p> : <p className={` text-primary-400 text-sm max-sm:hidden`}>Curtido</p>}
                 </div>
 
 
                 <div
                     onClick={() => setShowComentInput( true )}
                     className='flex items-center gap-2 cursor-pointer rounded-md px-2 py-1 '>
-                    <Icon.ChatDots size={24} className='fill-secondary-600 max-sm:w-6 max-sm:h-6' />
-                    <p className='text-secondary-600 max-sm:hidden max-sm:w-28'>Comentar</p>
+                    <Icon.ChatDots size={20} className='fill-secondary-600 max-sm:w-6 max-sm:h-6' />
+                    <p className='text-secondary-600 text-sm max-sm:hidden max-sm:w-28'>Comentar</p>
                 </div>
                 <div className='flex items-center gap-2 cursor-pointer rounded-md px-2 py-1 '>
-                    <Icon.BookmarkSimple size={24} className='fill-secondary-600 max-sm:w-6 max-sm:h-6' />
-                    <p className='text-secondary-600 max-sm:hidden max-sm:w-28'>Salvar</p>
+                    <Icon.BookmarkSimple size={20} className='fill-secondary-600 max-sm:w-6 max-sm:h-6' />
+                    <p className='text-secondary-600 text-sm max-sm:hidden max-sm:w-28'>Salvar</p>
                 </div>
             </nav>
 

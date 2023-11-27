@@ -34,3 +34,8 @@ body,html{
         @apply select-none
     }
 }
+
+body {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}

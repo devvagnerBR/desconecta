@@ -9,26 +9,21 @@ export const NewComment = ( { postId }: { postId: string } ) => {
     const { handleChange, createComment, comment } = newCommentBusiness( postId )
 
     return (
-        <section className='mt-4 flex items-center gap-4 pl-2'>
-            <img src={user?.avatar} alt="" className='w-10 h-10 rounded-full' />
+        <section className='mt-2 flex items-center gap-2 pl-2 border rounded-sm overflow-hidden'>
+            <img src={user?.avatar} alt="" className='w-8 h-8 rounded-full' />
             <form
                 onSubmit={( event ) => {
                     event.preventDefault();
                     createComment.mutate();
                 }}
-                className='flex w-full gap-2'>
+                className='flex w-full'>
                 <input
                     onChange={handleChange}
                     value={comment || ''}
                     maxLength={600}
                     type="text"
-                    className='text-primary-400 font-semibold w-full h-10 rounded-sm border border-secondary-400 px-2'
+                    className='text-primary-400 font-semibold w-full h-10 rounded-sm  border-l-0 border-secondary-400 px-2'
                 />
-                <button
-                    type="submit"
-                    className='w-24 px-2 bg-primary-400 rounded-sm h-10 border rounded-l-none border-primary-400 text-secondary-50 font-semibold text-lg'>
-                    Comentar
-                </button>
             </form>
         </section >
     )
