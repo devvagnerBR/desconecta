@@ -16,7 +16,7 @@ export const Comments = ( { post }: { post: PostProps } ) => {
 
                 const isLiked = user && comment.likes.includes( user?.id )
                 return (
-                    <section key={`${comment.author.id}+${comment.created_at}+${Math.random()}`} className=' p-2 border-t   flex flex-col items-start gap-2'>
+                    <section key={`${comment.author.id}+${comment.created_at}+${Math.random()}`} className=' p-2 border-t  flex flex-col items-start gap-2'>
                         <div className='flex gap-2 w-full'>
                             <img src={comment.author.avatar} alt="" className='w-6 h-6 rounded-full' />
                             <div className='flex flex-col w-full'>

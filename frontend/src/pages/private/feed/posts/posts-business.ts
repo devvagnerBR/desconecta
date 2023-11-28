@@ -41,10 +41,31 @@ export const PostBusiness = () => {
         await mutateAsync( postId )
     }
 
+    const [showOptionsMenu, setShowOptionsMenu] = React.useState( false )
+    const menuRef = React.useRef<HTMLDivElement | null>( null );
+
+    React.useEffect( () => {
+        function handleClickOutside( event: MouseEvent ) {
+            if ( menuRef.current && !menuRef.current.contains( event.target as Node ) ) {
+                setShowOptionsMenu( false );
+            }
+        }
+
+        document.addEventListener( "mousedown", handleClickOutside );
+        return () => {
+            document.removeEventListener( "mousedown", handleClickOutside );
+        };
+    }, [menuRef] );
+
+    
+
 
     return {
         posts: postsWithIsAuthor,
         handleToggleLike,
+        showOptionsMenu,
+        setShowOptionsMenu,
+        menuRef
 
     }
 

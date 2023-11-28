@@ -6,6 +6,7 @@ export interface PostProps {
     content: string;
     created_at: string;
     author_id: string;
+    is_author: boolean;
     its_published: boolean;
     type: PostType
 
