@@ -18,7 +18,7 @@ const UserContextProvider = ( { children }: React.PropsWithChildren ) => {
     const [isLogged, setIsLogged] = React.useState<boolean>( !!getCookie( "token" ) )
 
     const { getUserProfile } = userRequests()
-console.log(isLogged)
+
     const { data } = useQuery<User>( {
         queryKey: ["user"],
         queryFn: getUserProfile,
@@ -31,7 +31,6 @@ console.log(isLogged)
             {children}
         </UserContext.Provider>
     )
-
 }
 
 const useUserContext = () => {

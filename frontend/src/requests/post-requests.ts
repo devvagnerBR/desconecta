@@ -12,6 +12,7 @@ export const postRequests = () => {
 
     const token = getCookie( "token" );
 
+
     const getPosts = async ( type?: PostType ) => {
         const response = await api.get(
             '/post',
@@ -41,13 +42,22 @@ export const postRequests = () => {
         } );
     }
 
-    
+    const deletePost = async ( postId: string ): Promise<void> => {
+        await api.patch(
+            `/post/${postId}/delete`,
+            {},
+            {
+                headers: { Authorization: `Bearer ${token}` }
+            } );
+    }
+
 
     return {
         getPosts,
         createPost,
         createComment,
-        toggleLike
+        toggleLike,
+        deletePost
     }
 
 }

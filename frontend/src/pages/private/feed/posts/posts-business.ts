@@ -5,6 +5,7 @@ import { PostProps } from "@/types/post"
 import { useMutation, useQuery } from "react-query"
 import React from 'react';
 import { usePostContext } from "@/context/post-context"
+import { useModalContext } from "@/context/modal-context"
 
 
 
@@ -13,6 +14,7 @@ export const PostBusiness = () => {
     const req = postRequests()
     const user = useUserContext()
     const { postType } = usePostContext()
+    const { deletePost } = useModalContext()
 
     const { data: posts } = useQuery<PostProps[]>( {
         queryKey: ["posts", postType],
@@ -30,7 +32,7 @@ export const PostBusiness = () => {
     } )
 
 
-    const { mutateAsync } = useMutation( {
+    const { mutateAsync: toggleLikeMutation } = useMutation( {
         mutationFn: ( postId: string ) => req.toggleLike( postId ),
         onSuccess: () => {
             queryClient.invalidateQueries( ["posts"] )
@@ -38,7 +40,7 @@ export const PostBusiness = () => {
     } )
 
     const handleToggleLike = async ( postId: string ) => {
-        await mutateAsync( postId )
+        await toggleLikeMutation( postId )
     }
 
     const [showOptionsMenu, setShowOptionsMenu] = React.useState( false )
@@ -57,7 +59,16 @@ export const PostBusiness = () => {
         };
     }, [menuRef] );
 
-    
+    const {mutateAsync: deletePostMutation} = useMutation( {
+        mutationFn: ( postId: string ) => req.deletePost( postId ),
+        onSuccess: () => {
+            queryClient.invalidateQueries( ["posts"] )
+            deletePost.close()
+        }
+    } )
+
+
+
 
 
     return {
@@ -65,8 +76,8 @@ export const PostBusiness = () => {
         handleToggleLike,
         showOptionsMenu,
         setShowOptionsMenu,
-        menuRef
-
+        menuRef,
+        deletePostMutation
     }
 
 
