@@ -4,14 +4,13 @@ import { getPageWidth } from '@/utils/get-page-width'
 import { textLimit } from '@/utils/text-limit'
 import * as Icon from "@phosphor-icons/react"
 import React from 'react'
-import { NewComment } from './new-comment'
-import { Comments } from './comments'
+import { NewComment } from '../new-comment'
+import { Comments } from '../comments'
 import { momentJs } from '@/libs/moment-js'
 import { PostProps } from '@/types/post'
-import { PostBusiness } from './posts-business'
+import { PostBusiness } from '../posts-business'
 import { useUserContext } from '@/context/user-context'
-import { useModalContext } from '@/context/modal-context'
-import { usePostContext } from '@/context/post-context'
+import { ModalPostOptions } from '../modal-post-options'
 
 export interface CardPostProps {
     post: PostProps
@@ -20,47 +19,25 @@ export interface CardPostProps {
 export const CardPost = ( { post }: CardPostProps ) => {
 
     const author = post?.author
-    const { deletePost } = useModalContext()
     const { data: user } = useUserContext()
     const { size } = getPageWidth()
 
-    const { handleToggleLike,
-        showOptionsMenu,
-        setShowOptionsMenu,
-        menuRef,
+    const { handleToggleLike
     } = PostBusiness()
 
-    const { setPostId } = usePostContext()
-
     const [showComentInput, setShowComentInput] = React.useState( false )
-    const isLiked = user && post.likes.includes( user?.id )
+    const [showOptionsMenu, setShowOptionsMenu] = React.useState( false )
 
+    const isLiked = user && post?.likes?.includes( user?.id )
+    if ( !post ) return null
     return (
         <section className={`border bg-secondary-50 py-2 px-4 rounded-sm relative `}>
 
-            {showOptionsMenu &&
-                <div
-                    onClick={() => setPostId( post.id )}
-                    ref={menuRef}
-                    className='absolute flex items-start justify-start flex-col gap-2 right-5 top-3 px-2 py-4 w-fit shadow-sm border bg-secondary-50 rounded-sm'>
-                    <p className='h-8 hover:bg-secondary-200 w-full  gap-2 transition-all cursor-pointer p-1 flex items-center justify-start'>
-                        <Icon.Copy size={24} weight='light' className='fill-secondary-800' />
-                        Copiar Link da publicação
-                    </p>
+            <ModalPostOptions
+                post={post}
+                setShowOptionsMenu={setShowOptionsMenu}
+                showOptionsMenu={showOptionsMenu} />
 
-                    <p className='h-8 hover:bg-secondary-200 w-full gap-2 transition-all cursor-pointer p-1 flex items-center justify-start'>
-                        <Icon.BookmarkSimple size={24} weight='light' className='fill-secondary-800' />
-                        Salvar publicação
-                    </p>
-                    {post.is_author &&
-                        <p
-                            onClick={() => deletePost.open()}
-                            className='h-8 hover:bg-secondary-200 w-full  gap-2 transition-all cursor-pointer  p-1 flex items-center justify-start'>
-                            <Icon.Trash size={24} weight='light' className='fill-secondary-800' />
-                            Deletar publicação
-                        </p>}
-                </div>
-            }
             <header className='flex h-12 items-center gap-2'>
                 <div className="w-full flex gap-4 h-full items-center justify-start pr-2">
                     <div className="flex flex-col order-1  gap-1 shrink-0 no_click">
@@ -79,7 +56,7 @@ export const CardPost = ( { post }: CardPostProps ) => {
 
                 <section className='h-full cursor-pointer'>
                     <Icon.DotsThree
-                        onClick={() => setShowOptionsMenu( !showOptionsMenu )}
+                        onClick={() => setShowOptionsMenu( true )}
                         size={28} weight='bold' />
                 </section>
             </header>
@@ -117,7 +94,7 @@ export const CardPost = ( { post }: CardPostProps ) => {
             </nav>
 
             {showComentInput && < NewComment postId={post.id} />}
-            {showComentInput && post.comments.length > 0 && <Comments post={post} />}
+            {showComentInput && post?.comments?.length > 0 && <Comments post={post} />}
 
         </section>
     )

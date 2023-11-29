@@ -7,6 +7,7 @@ export interface ModalContext {
 
     newPost: ReturnType<typeof useModal>
     deletePost: ReturnType<typeof useModal>
+    deleteComment: ReturnType<typeof useModal>
 
 }
 
@@ -16,12 +17,14 @@ const ModalContextProvider = ( { children }: React.PropsWithChildren ) => {
 
     const newPost = useModal()
     const deletePost = useModal()
+    const deleteComment = useModal()
 
-    const shouldSetOverflowhidden = newPost.isOpen || deletePost.isOpen
+    const shouldSetOverflowhidden = newPost.isOpen || deletePost.isOpen || deleteComment.isOpen
     setBodyAsOverflowHidden( shouldSetOverflowhidden )
 
+
     return (
-        <ModalContext.Provider value={{ newPost, deletePost }}>
+        <ModalContext.Provider value={{ newPost, deletePost, deleteComment }}>
             {children}
         </ModalContext.Provider>
     )

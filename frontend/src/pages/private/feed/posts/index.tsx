@@ -1,5 +1,5 @@
 import { PostType } from "@/requests/post-requests"
-import { CardPost } from "./card-post"
+import { CardPost } from "./card-post/card-post"
 import { PostBusiness } from "./posts-business"
 import { useUserContext } from "@/context/user-context"
 

@@ -43,23 +43,11 @@ export const PostBusiness = () => {
         await toggleLikeMutation( postId )
     }
 
-    const [showOptionsMenu, setShowOptionsMenu] = React.useState( false )
+
     const menuRef = React.useRef<HTMLDivElement | null>( null );
 
-    React.useEffect( () => {
-        function handleClickOutside( event: MouseEvent ) {
-            if ( menuRef.current && !menuRef.current.contains( event.target as Node ) ) {
-                setShowOptionsMenu( false );
-            }
-        }
 
-        document.addEventListener( "mousedown", handleClickOutside );
-        return () => {
-            document.removeEventListener( "mousedown", handleClickOutside );
-        };
-    }, [menuRef] );
-
-    const {mutateAsync: deletePostMutation} = useMutation( {
+    const { mutateAsync: deletePostMutation } = useMutation( {
         mutationFn: ( postId: string ) => req.deletePost( postId ),
         onSuccess: () => {
             queryClient.invalidateQueries( ["posts"] )
@@ -67,17 +55,22 @@ export const PostBusiness = () => {
         }
     } )
 
+    const { mutateAsync: deleteCommentMutation } = useMutation( {
+        mutationFn: ( commentId: string ) => req.deleteComment( commentId ),
+        onSuccess: () => {
+            queryClient.invalidateQueries( ["posts"] )
+            deletePost.close()
+        }
 
-
+    } )
 
 
     return {
         posts: postsWithIsAuthor,
         handleToggleLike,
-        showOptionsMenu,
-        setShowOptionsMenu,
         menuRef,
-        deletePostMutation
+        deletePostMutation,
+        deleteCommentMutation
     }
 
 

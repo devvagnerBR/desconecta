@@ -52,12 +52,20 @@ export const postRequests = () => {
     }
 
 
+    const deleteComment = async ( commentId: string ): Promise<void> => {
+        await api.delete(
+            `/post/${commentId}/comment/delete`,
+            { headers: { Authorization: `Bearer ${token}` } } );
+
+    }
+
     return {
         getPosts,
         createPost,
         createComment,
         toggleLike,
-        deletePost
+        deletePost,
+        deleteComment
     }
 
 }
