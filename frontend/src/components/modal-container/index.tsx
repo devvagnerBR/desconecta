@@ -10,7 +10,6 @@ export const ModalContainer = () => {
     const { newPost, deletePost, deleteComment } = useModalContext()
 
     const shouldOpen = newPost.isOpen || deletePost.isOpen || deleteComment.isOpen
-    console.log( deleteComment.isOpen )
 
     if ( !shouldOpen ) return null
     return (

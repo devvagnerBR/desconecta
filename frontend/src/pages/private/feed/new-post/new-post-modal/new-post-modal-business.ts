@@ -5,9 +5,11 @@ import { PostType, postRequests } from '@/requests/post-requests';
 import { useMutation } from 'react-query';
 import { useModalContext } from '@/context/modal-context';
 import { queryClient } from '@/libs/react-query';
+import { useToasts } from '@/hooks/use-toasts';
 
 export const newPostModalBusiness = () => {
 
+    const { cretePostNotify } = useToasts()
 
     const req = postRequests();
     const { newPost } = useModalContext();
@@ -35,10 +37,11 @@ export const newPostModalBusiness = () => {
 
     const addNewPost = useMutation( {
         mutationFn: ( data: newPostFormData ) => req.createPost( data.content, data.type ),
-        onSuccess: () => {
+        onSuccess: async () => {
 
-            queryClient.invalidateQueries( ["posts"] )
+            await cretePostNotify()
             newPost.close()
+            queryClient.invalidateQueries( ["posts"] )
 
         }
     } );

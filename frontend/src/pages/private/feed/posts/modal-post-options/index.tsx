@@ -1,9 +1,11 @@
 import { usePostContext } from '@/context/post-context'
 import React from 'react'
-import { PostBusiness } from '../posts-business'
+
 import * as Icon from "@phosphor-icons/react"
 import { useModalContext } from '@/context/modal-context'
 import { PostProps } from '@/types/post'
+import { copyToClipboard } from '@/utils/copy-to-clipboard'
+import { useToasts } from '@/hooks/use-toasts';
 
 interface ModalPostOptionsProps {
 
@@ -15,6 +17,7 @@ interface ModalPostOptionsProps {
 
 export const ModalPostOptions = ( { post, showOptionsMenu, setShowOptionsMenu }: ModalPostOptionsProps ) => {
 
+    const { copyPostToClipBoardNotify, savePostNofity } = useToasts()
     const { setPostId } = usePostContext()
     const { deletePost } = useModalContext()
 
@@ -41,18 +44,25 @@ export const ModalPostOptions = ( { post, showOptionsMenu, setShowOptionsMenu }:
             ref={menuRef}
             onClick={() => setPostId( post.id )}
             className='absolute flex items-start justify-start flex-col gap-2 right-5 top-3 px-2 py-4 w-fit shadow-sm border bg-secondary-50 rounded-sm'>
-            <p className='h-8 hover:bg-secondary-200 w-full  gap-2 transition-all cursor-pointer p-1 flex items-center justify-start'>
+            <p
+                onClick={() => {
+                    copyToClipboard( "/post", post.id )
+                    copyPostToClipBoardNotify()
+                }}
+                className='h-8 hover:bg-secondary-200 hover:rounded-sm w-full active:bg-primary-400 active:text-secondary-50 duration-150 gap-2 transition-all cursor-pointer p-1 flex items-center justify-start'>
                 <Icon.Copy size={24} weight='light' className='fill-secondary-800' />
-                Copiar Link da publicação
+                Copiar link da publicação
             </p>
-            <p className='h-8 hover:bg-secondary-200 w-full gap-2 transition-all cursor-pointer p-1 flex items-center justify-start'>
+            <p
+                onClick={() => savePostNofity()}
+                className='h-8 hover:bg-secondary-200 hover:rounded-sm w-full gap-2 transition-all cursor-pointer p-1 flex items-center justify-start'>
                 <Icon.BookmarkSimple size={24} weight='light' className='fill-secondary-800' />
                 Salvar publicação
             </p>
             {post.is_author &&
                 <p
-                    onClick={() => deletePost.open()}
-                    className='h-8 hover:bg-secondary-200 w-full  gap-2 transition-all cursor-pointer  p-1 flex items-center justify-start'>
+                    onClick={async () => deletePost.open()}
+                    className='h-8 hover:bg-secondary-200 hover:rounded-sm w-full  gap-2 transition-all cursor-pointer  p-1 flex items-center justify-start'>
                     <Icon.Trash size={24} weight='light' className='fill-secondary-800' />
                     Deletar publicação
                 </p>}

@@ -2,6 +2,7 @@ import { ContainerApp, Header, MenuMobile, ModalContainer, SidebarMenu } from '@
 import { ContextProvider } from '@/context/context-provider'
 import { Login, Register, Notifications, Feed, Saved, Hashtags, Search } from '@/pages'
 import { Profile } from '@/pages/private/profile'
+import { Toaster } from 'react-hot-toast'
 
 import { BrowserRouter, Routes, Route } from "react-router-dom"
 
@@ -11,6 +12,7 @@ export const Routers = () => {
     return (
         <BrowserRouter>
             <ContextProvider>
+                <Toaster />
                 <ModalContainer />
                 <Header />
                 <ContainerApp>
@@ -25,6 +27,7 @@ export const Routers = () => {
                             <Route path='/salvos' element={< Saved />} />
                             <Route path='/hashtag' element={< Hashtags />} />
                             <Route path='/pesquisar' element={< Search />} />
+                            <Route path='/post/:postId' element={<p>INDIVIDUAL POST</p>} />
                         </Routes>
                         <MenuMobile />
                     </div>

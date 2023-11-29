@@ -6,14 +6,13 @@ import { newPostModalBusiness } from './new-post-modal-business';
 import { useModalContext } from '@/context/modal-context';
 import { PostType } from '@/requests/post-requests';
 import React from 'react';
+import { useToasts } from '@/hooks/use-toasts';
 
 export const NewPostModal = () => {
 
     const { data } = useUserContext()
     const { register, contentLength, onSubmit } = newPostModalBusiness()
     const { newPost } = useModalContext()
-
-
 
     return (
         <form onSubmit={onSubmit} className='w-screen  max-w-3xl max-h-[320px] max-md:max-h-none h-screen bg-white rounded-sm shadow-sm px-4'>

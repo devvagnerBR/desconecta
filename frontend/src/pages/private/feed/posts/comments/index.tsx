@@ -6,7 +6,7 @@ import { useUserContext } from '@/context/user-context'
 import React from 'react'
 import { usePostContext } from '@/context/post-context'
 import { useModalContext } from '@/context/modal-context'
-import { set } from 'zod'
+
 
 export const Comments = ( { post }: { post: PostProps } ) => {
 
@@ -27,6 +27,7 @@ export const Comments = ( { post }: { post: PostProps } ) => {
             if ( iconRef.current && iconRef.current.contains( event.target as Node ) ) {
                 return;
             } else if ( menuRef.current && !menuRef.current.contains( event.target as Node ) ) {
+                
             }
         }
         document.addEventListener( "mousedown", handleClickOutside, true );

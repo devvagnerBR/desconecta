@@ -2,12 +2,14 @@ import { useModalContext } from '@/context/modal-context'
 import React from 'react'
 import { PostBusiness } from '../posts-business'
 import { usePostContext } from '@/context/post-context'
+import { useToasts } from '@/hooks/use-toasts'
 
 export const DeletePostModal = () => {
 
     const { deletePost } = useModalContext()
     const { deletePostMutation } = PostBusiness()
     const { postId } = usePostContext()
+    const { deletePostNotify } = useToasts()
 
 
     return (
@@ -19,7 +21,12 @@ export const DeletePostModal = () => {
                     onClick={() => deletePost.close()}
                     className='border border-secondary-800 text-secondary-800 font-semibold p-3 rounded-sm hover:shadow-sm'>Cancelar</button>
                 <button
-                    onClick={() => deletePostMutation( postId! )}
+                    onClick={async () => {
+                        deletePost.close()
+                        await deletePostNotify()
+                        deletePostMutation( postId! )
+                    }
+                    }
                     className='border p-3 rounded-sm hover:shadow-sm bg-primary-400 border-primary-400 text-secondary-50 font-medium'>Excluir</button>
             </div>
         </div >
