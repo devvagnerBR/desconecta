@@ -7,6 +7,7 @@ export class POST_DATABASE {
 
         const posts = await PRISMA.post.findMany( {
             where: { its_published: true, type },
+            orderBy: { created_at: 'desc' },
             include: {
                 author: {
                     select: {
@@ -19,6 +20,7 @@ export class POST_DATABASE {
                         author: {
                             select: {
                                 id: true, username: true, email: true, avatar: true,
+                                course: { select: { name: true } }
 
                             }
                         },
@@ -59,7 +61,9 @@ export class POST_DATABASE {
 
     async markPostAsDeleted( postId: string ) {
         await PRISMA.post.update( {
-            where: { id: postId }, data: { its_published: false }
+            where: {
+                id: postId
+            }, data: { its_published: false }
         } )
     }
 
@@ -75,7 +79,6 @@ export class POST_DATABASE {
 
     async deleteComment( commentId: string ) {
         await PRISMA.comment.delete( { where: { id: commentId } } )
-
     }
 
     async toggleLike( userId: string, itemId: string ) {

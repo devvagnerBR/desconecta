@@ -78,7 +78,6 @@ export const POST_CONTROLLER = async () => {
         } )
 
         const { postId } = markPostAsDeletedParamsSchema.parse( req.params )
-
         await postFactory.markPostAsDeleted( postId )
         return res.status( 200 ).send( { message: "Post deletado com sucesso" } )
     }

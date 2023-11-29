@@ -142,5 +142,4 @@ export class USER_DATABASE {
 
         return postsWithLikesInArrayOfIds
     }
-
 }

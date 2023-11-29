@@ -7,7 +7,6 @@ export const verifyJWT = async ( req: FastifyRequest, res: FastifyReply ) => {
         await req.jwtVerify();
     } catch ( error ) {
         res.status( 401 )
-            .send( { message: 'Não autorizado' } );
+            .send( { message: 'Não autorizado ou token inválido' } );
     }
-
 }
