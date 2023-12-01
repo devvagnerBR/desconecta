@@ -57,7 +57,8 @@ export const registerBusiness = () => {
 
     const onSubmit = handleSubmit( async ( data: RegisterFormProps ) => {
         registerLoading.execute( async () => {
-            await signIn.mutateAsync( data );
+            console.log( data )
+            // await signIn.mutateAsync( data );
         } )
     } )
 

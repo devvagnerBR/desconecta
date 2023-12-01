@@ -1,8 +1,8 @@
 import { useUserContext } from "@/context/user-context"
 import { queryClient } from "@/libs/react-query"
-import { PostType, postRequests } from "@/requests/post-requests"
+import { postRequests } from "@/requests/post-requests"
 import { PostProps } from "@/types/post"
-import { useMutation, useQuery } from "react-query"
+import { useInfiniteQuery, useMutation, useQuery } from "react-query"
 import React from 'react';
 import { usePostContext } from "@/context/post-context"
 import { useModalContext } from "@/context/modal-context"
@@ -13,24 +13,33 @@ export const PostBusiness = () => {
 
     const req = postRequests()
     const user = useUserContext()
-    const { postType } = usePostContext()
+    const { postType  } = usePostContext()
     const { deletePost } = useModalContext()
 
-    const { data: posts } = useQuery<PostProps[]>( {
-        queryKey: ["posts", postType],
-        queryFn: () => req.getPosts( postType ),
-        refetchOnWindowFocus: false,
-    } )
+    const {
+        data,
+        fetchNextPage,
 
-    const postsWithIsAuthor = posts?.map( post => {
+    } = useInfiniteQuery( {
+        queryKey: ["posts", postType],
+        queryFn: ( { pageParam = 1 } ) => req.getPosts( postType, pageParam ),
+        getNextPageParam: ( lastPage, allPages ) => {
+
+            return allPages.length + 1
+        },
+        refetchOnWindowFocus: false,
+    } );
+
+    const newPosts = data?.pages.flatMap( page => page )
+
+    const postsWithIsAuthor = newPosts?.map<PostProps>( post => {
         return {
             ...post, is_author: post.author_id === user.data?.id,
-            comments: post.comments.map( comment => {
+            comments: post.comments.map( ( comment: any ) => {
                 return { ...comment, is_author: comment.author_id === user.data?.id }
             } )
         }
-    } )
-
+    } );
 
     const { mutateAsync: toggleLikeMutation } = useMutation( {
         mutationFn: ( postId: string ) => req.toggleLike( postId ),
@@ -43,9 +52,7 @@ export const PostBusiness = () => {
         await toggleLikeMutation( postId )
     }
 
-
     const menuRef = React.useRef<HTMLDivElement | null>( null );
-
 
     const { mutateAsync: deletePostMutation } = useMutation( {
         mutationFn: ( postId: string ) => req.deletePost( postId ),
@@ -70,7 +77,8 @@ export const PostBusiness = () => {
         handleToggleLike,
         menuRef,
         deletePostMutation,
-        deleteCommentMutation
+        deleteCommentMutation,
+        fetchNextPage
     }
 
 

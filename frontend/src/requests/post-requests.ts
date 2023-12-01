@@ -13,12 +13,12 @@ export const postRequests = () => {
     const token = getCookie( "token" );
 
 
-    const getPosts = async ( type?: PostType ) => {
+    const getPosts = async ( type?: PostType, page?: number ) => {
         const response = await api.get(
             '/post',
             {
                 headers: { Authorization: `Bearer ${token}` },
-                params: { type }
+                params: { type, page: page?.toString() }
             } );
 
         return response.data;

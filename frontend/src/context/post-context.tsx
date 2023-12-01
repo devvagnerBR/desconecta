@@ -9,6 +9,8 @@ interface PostContextProps {
     setPostId: React.Dispatch<React.SetStateAction<string | null>>
     commentId: string | null,
     setCommentId: React.Dispatch<React.SetStateAction<string | null>>
+    page: number,
+    setPage: React.Dispatch<React.SetStateAction<number>>
 
 }
 
@@ -19,13 +21,16 @@ const PostContextProvider = ( { children }: React.PropsWithChildren ) => {
     const [postType, setPostType] = React.useState<PostType>( PostType.PUBLIC )
     const [postId, setPostId] = React.useState<string | null>( "" )
     const [commentId, setCommentId] = React.useState<string | null>( "" )
+    const [page, setPage] = React.useState<number>( 1 )
 
 
-
+    0
     return (
         <PostContext.Provider value={{
-            postType, setPostType, postId, setPostId, commentId, setCommentId
-
+            postType, setPostType,
+            postId, setPostId,
+            commentId, setCommentId,
+            page, setPage
         }}>
             {children}
         </PostContext.Provider>

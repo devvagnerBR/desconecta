@@ -1,5 +1,6 @@
 import { PostType } from "@/requests/post-requests";
 
+
 export interface PostProps {
 
     id: string;
