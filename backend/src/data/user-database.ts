@@ -1,4 +1,4 @@
-import { PRISMA } from "@/libs/prisma";
+import { PRISMA } from "@/database/prisma";
 import { Prisma, User } from "@prisma/client";
 import moment from 'moment-timezone';
 
@@ -69,8 +69,17 @@ export class USER_DATABASE {
             where: { id: userId },
             include: {
                 course: true,
+                UserInfos: {
+                    select: {
+                        headline: true,
+                        address: true,
+                        birthday: true,
+                        gender: true,
+                        phone: true,
+                        links: true,
+                    }
+                },
             }
-
         } )
 
         return user
@@ -141,5 +150,27 @@ export class USER_DATABASE {
         } ) )
 
         return postsWithLikesInArrayOfIds
+    }
+
+    async upsertUserInfos( userId: string, data: Prisma.UserInfosCreateInput ) {
+
+        if ( !userId ) {
+            throw new Error( "userId não informado" );
+        }
+
+        const userData = {
+            ...data,
+            user: {
+                connect: { id: userId },
+            },
+        };
+
+        const user = await PRISMA.userInfos.upsert( {
+            where: { user_id: userId },
+            create: userData,
+            update: userData
+        } )
+
+        return user
     }
 }

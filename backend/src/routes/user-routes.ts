@@ -17,5 +17,6 @@ export const userRoutes = async ( app: FastifyInstance ) => {
     app.post( '/user/validate-account', { onRequest: [verifyJWT] }, user.validateAccount )
 
     app.get( '/user/posts', { onRequest: [verifyJWT] }, user.getUserPosts )
+    app.patch( '/user/infos', { onRequest: [verifyJWT] }, user.upsertUserInfos )
 
 }

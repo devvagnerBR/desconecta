@@ -1,4 +1,4 @@
-import { PRISMA } from "@/libs/prisma";
+import { PRISMA } from "@/database/prisma";
 import { Prisma, Course } from "@prisma/client";
 
 

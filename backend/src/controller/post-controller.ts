@@ -9,12 +9,17 @@ export const POST_CONTROLLER = async () => {
     const getPosts = async ( req: FastifyRequest, res: FastifyReply ) => {
 
         const postSchema = z.object( {
-            type: z.optional( z.enum( ['PUBLIC', 'COURSE'] ) )
+            type: z.optional( z.enum( ['PUBLIC', 'COURSE'] ) ),
+
         } )
 
+        const pageSchema = z.object( {
+            page: z.string().optional().transform( value => Number( value ) )
+        } )
 
+        const { page } = pageSchema.parse( req.query )
         const { type } = postSchema.parse( req.query )
-        const posts = await postFactory.getPosts( type )
+        const posts = await postFactory.getPosts( type, Number( page ) )
 
         return res.status( 200 ).send( posts )
 

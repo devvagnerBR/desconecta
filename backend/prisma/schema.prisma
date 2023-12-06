@@ -8,19 +8,42 @@ datasource db {
 }
 
 model User {
-  id          String    @id @default(uuid())
-  username    String    @unique
-  email       String    @unique
-  created_at  DateTime  @default(now())
-  is_verified Boolean   @default(false)
+  id          String      @id @default(uuid())
+  username    String      @unique
+  email       String      @unique
+  created_at  DateTime    @default(now())
+  is_verified Boolean     @default(false)
   password    String
   avatar      String?
   course_id   Int?
-  course      Course?   @relation(fields: [course_id], references: [id])
+  course      Course?     @relation(fields: [course_id], references: [id])
   Comment     Comment[]
   Post        Post[]
+  UserInfos   UserInfos[]
+  Avatar      Avatar[]
 
   @@map("users")
+}
+
+enum GenderType {
+  MALE
+  FEMALE
+  NON_BINARY
+  OTHER
+  NOT_INFORMED
+}
+
+model UserInfos {
+  headline String?     @default("Não esquece de escrever um pouco sobre você! queremos te conhecer melhor 😊")
+  address  String?     @default("E se quiser, pode colocar seu endereço aqui também!")
+  phone    String?     @default("caso esteja se sentindo a vontade, pode colocar seu telefone aqui também!")
+  birthday String?     @default("e sua data de aniversário é muito bem vinda!")
+  gender   GenderType? @default(NOT_INFORMED)
+  links    Json?
+  user_id  String      @id @unique
+  user     User?       @relation(fields: [user_id], references: [id])
+
+  @@map("user_infos")
 }
 
 model Course {
@@ -37,6 +60,22 @@ model Course {
 enum PostType {
   PUBLIC
   COURSE
+}
+
+enum AvatarType {
+  MALE
+  FEMALE
+}
+
+model Avatar {
+  id            String     @id @default(uuid())
+  gender        AvatarType
+  url           String
+  created_at    DateTime   @default(now())
+  created_by_id String
+  created_by    User       @relation(fields: [created_by_id], references: [id])
+
+  @@map("avatars")
 }
 
 model Post {

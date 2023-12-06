@@ -1,9 +1,10 @@
-import { PRISMA } from "@/libs/prisma";
+import { PRISMA } from "@/database/prisma";
 import { Prisma } from "@prisma/client";
 
 export class POST_DATABASE {
 
-    async getPosts( type: 'PUBLIC' | 'COURSE' = "PUBLIC" ) {
+    async getPosts( type: 'PUBLIC' | 'COURSE' = "PUBLIC", CurrentPage: number = 1 ) {
+
 
         const posts = await PRISMA.post.findMany( {
             where: { its_published: true, type },
@@ -34,6 +35,9 @@ export class POST_DATABASE {
                 }
             },
 
+            take: 5,
+            skip: ( CurrentPage - 1 ) * 5 // 
+
         } )
 
         const postsWithLikesInArrayOfIds = posts.map( post => ( {
@@ -55,6 +59,7 @@ export class POST_DATABASE {
                 content: data.content,
                 type: data.type ?? undefined,
                 author_id: userId,
+                its_published: true
             }
         } )
     }

@@ -1,6 +1,6 @@
 import { USER_BUSINESS } from "@/business/user-business";
-import { USER_DATABASE } from "@/database/user-database"
-import { COURSE_DATABASE } from '../database/course-database';
+import { USER_DATABASE } from "@/data/user-database"
+import { COURSE_DATABASE } from '../data/course-database';
 
 
 export const makeUserFactory = () => {

@@ -1,9 +1,9 @@
-import { USER_DATABASE } from '../database/user-database';
+import { USER_DATABASE } from '../data/user-database';
 import { Prisma } from '@prisma/client';
 import *  as bcrypt from 'bcryptjs';
 import { env } from '@/env';
 import { CustomError } from '@/entities/custom-error';
-import { COURSE_DATABASE } from '@/database/course-database';
+import { COURSE_DATABASE } from '@/data/course-database';
 import { ValidateAccount } from '@/libs/nodemailer';
 
 
@@ -118,6 +118,16 @@ export class USER_BUSINESS {
         const posts = await this.userDatabase.getUserPosts( userId )
         if ( !Array.isArray( posts ) ) throw new CustomError( 404, "posts não encontrados" )
         return posts
+
+    }
+
+    async upsertUserInfos( userId: string, data: Prisma.UserInfosCreateInput ) {
+
+        const user = await this.userDatabase.findById( userId )
+        if ( !user ) throw new CustomError( 404, "usuário não encontrado" )
+        if ( !data.address && !data.birthday && !data.headline && !data.phone ) throw new CustomError( 400, "nenhum dado foi informado" )
+
+        await this.userDatabase.upsertUserInfos( userId, data )
 
     }
 }

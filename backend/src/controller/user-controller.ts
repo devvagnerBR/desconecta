@@ -140,6 +140,30 @@ export const USER_CONTROLLER = async () => {
 
     }
 
+    const upsertUserInfos = async ( req: FastifyRequest, res: FastifyReply ) => {
+
+        const upsetUserInfosSchema = z.object( {
+            headline: z.string().max( 200 ).optional(),
+            address: z.string().optional(),
+            phone: z.string().optional(),
+            birthday: z.string().optional(),
+            links: z.object( {
+                github: z.string().optional(),
+                linkedin: z.string().optional(),
+                portfolio: z.string().optional(),
+            } ).strict().optional(),
+        } )
+
+        const { headline, address, phone, birthday, links } = upsetUserInfosSchema.parse( req.body )
+
+        const userId = req.user.sub as string
+
+        await userFactory.upsertUserInfos( userId, { headline, address, phone, birthday, links } )
+
+        return res.status( 200 ).send( { message: "Informações atualizadas com sucesso" } )
+
+    }
+
     return {
         create,
         authenticate,
@@ -147,7 +171,8 @@ export const USER_CONTROLLER = async () => {
         update,
         sendCodeValidation,
         validateAccount,
-        getUserPosts
+        getUserPosts,
+        upsertUserInfos
     }
 
 }

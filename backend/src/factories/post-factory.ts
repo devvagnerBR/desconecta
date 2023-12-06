@@ -1,7 +1,7 @@
 import { USER_BUSINESS } from "@/business/user-business";
-import { USER_DATABASE } from "@/database/user-database"
-import { COURSE_DATABASE } from '../database/course-database';
-import { POST_DATABASE } from "@/database/post-database";
+import { USER_DATABASE } from "@/data/user-database"
+import { COURSE_DATABASE } from '../data/course-database';
+import { POST_DATABASE } from "@/data/post-database";
 import { POST_BUSINESS } from "@/business/post-business";
 
 
