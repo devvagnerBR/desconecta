@@ -8,6 +8,7 @@ import { CustomError } from "./entities/custom-error";
 import cors from '@fastify/cors'
 import { postRoutes } from "./routes/post-routes";
 import { adminRoutes } from "./routes/admin-routes";
+import { systemRoutes } from "./routes/system-routes";
 
 export const app = fastify();
 
@@ -33,6 +34,8 @@ app.register( fastifyCookie );
 app.register( userRoutes );
 app.register( postRoutes );
 app.register( adminRoutes );
+app.register( systemRoutes );
+
 
 app.setErrorHandler( ( error, _, res ) => {
 

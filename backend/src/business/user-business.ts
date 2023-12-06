@@ -66,7 +66,6 @@ export class USER_BUSINESS {
     async profile( userId: string ) {
         const user = await this.userDatabase.profile( userId )
         if ( !user ) throw new CustomError( 404, "usuário não encontrado" )
-
         return user
     }
 
@@ -125,7 +124,7 @@ export class USER_BUSINESS {
 
         const user = await this.userDatabase.findById( userId )
         if ( !user ) throw new CustomError( 404, "usuário não encontrado" )
-        if ( !data.address && !data.birthday && !data.headline && !data.phone ) throw new CustomError( 400, "nenhum dado foi informado" )
+        if ( !data.address && !data.birthday && !data.headline && !data.phone && !data.gender ) throw new CustomError( 400, "nenhum dado foi informado" )
 
         await this.userDatabase.upsertUserInfos( userId, data )
 

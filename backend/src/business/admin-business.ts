@@ -18,14 +18,11 @@ export class ADMIN_BUSINESS {
 
     async uploadAvatar( userId: string, avatar: File, gender: AvatarType ) {
 
-
-
-        console.log( userId );
         const user = await this.userDatabase.findById( userId );
 
         if ( !user ) throw new CustomError( 404, "usuário não encontrado" );
+        if(user.role !== "ADMIN") throw new CustomError( 404, "usuário não é admin" );
 
-        // //🟩  verificar se user.role === "ADMIN"
 
         if ( !avatar ) throw new CustomError( 404, "arquivo não encontrado" );
         if ( !avatar.mimetype.includes( "image" ) ) throw new CustomError( 404, "arquivo inválido" );

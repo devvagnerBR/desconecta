@@ -15,7 +15,7 @@ export const adminRoutes = async ( app: FastifyInstance ) => {
     const upload = fastifyMulter( { storage: fastifyMulter.memoryStorage() } );
     app.register( fastifyMulter.contentParser );
 
-    app.post( '/avatar/upload', { preHandler: upload.single( 'avatar' ) }, async ( request, reply ) => {
+    app.post( '/avatar/upload', { preHandler: upload.array( 'avatar' ) }, async ( request, reply ) => {
         const multerRequest = request as MulterRequest; // Cast the request to MulterRequest
         await admin.uploadAvatar( multerRequest, reply );
     } );

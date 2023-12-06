@@ -1,4 +1,5 @@
 import { makeUserFactory } from "@/factories/user-factory";
+import { GenderType } from "@prisma/client";
 import { FastifyReply, FastifyRequest } from "fastify";
 import { z } from "zod";
 
@@ -147,6 +148,7 @@ export const USER_CONTROLLER = async () => {
             address: z.string().optional(),
             phone: z.string().optional(),
             birthday: z.string().optional(),
+            gender: z.enum( [GenderType.FEMALE, GenderType.MALE, GenderType.NON_BINARY, GenderType.NOT_INFORMED, GenderType.OTHER] ).optional(),
             links: z.object( {
                 github: z.string().optional(),
                 linkedin: z.string().optional(),
@@ -154,11 +156,11 @@ export const USER_CONTROLLER = async () => {
             } ).strict().optional(),
         } )
 
-        const { headline, address, phone, birthday, links } = upsetUserInfosSchema.parse( req.body )
+        const { headline, address, phone, birthday, links, gender } = upsetUserInfosSchema.parse( req.body )
 
         const userId = req.user.sub as string
 
-        await userFactory.upsertUserInfos( userId, { headline, address, phone, birthday, links } )
+        await userFactory.upsertUserInfos( userId, { headline, address, phone, birthday, links, gender } )
 
         return res.status( 200 ).send( { message: "Informações atualizadas com sucesso" } )
 

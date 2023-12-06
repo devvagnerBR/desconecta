@@ -7,14 +7,21 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+
+enum UserRole {
+  ADMIN
+  USER
+}
+
 model User {
   id          String      @id @default(uuid())
   username    String      @unique
   email       String      @unique
+  role        UserRole    @default(USER)
   created_at  DateTime    @default(now())
   is_verified Boolean     @default(false)
   password    String
-  avatar      String?
+  avatar      String? @default("https://firebasestorage.googleapis.com/v0/b/banco-imagens-art-rj.appspot.com/o/avatar%2Fdescomplica-mascote.png?alt=media&token=bf749128-f61f-4b34-8c75-b2fde6722313")
   course_id   Int?
   course      Course?     @relation(fields: [course_id], references: [id])
   Comment     Comment[]
