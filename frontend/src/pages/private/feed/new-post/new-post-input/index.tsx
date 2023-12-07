@@ -19,12 +19,12 @@ export const NewPostInput = () => {
             <div
                 onClick={newPost.open}
                 className='flex items-center w-full cursor-pointer'>
-                <div className="w-full bg-secondary-50 h-10 border flex items-center rounded-sm rounded-r-none pl-2">
+                <div className="w-full bg-secondary-50 h-10 border flex items-center rounded-2xl rounded-r-none pl-2">
                     <p className="font-light text-secondary-600">Compartilhe algo novo ...</p>
                 </div>
                 <button
                     type="reset"
-                    className='w-24 bg-primary-400 rounded-sm h-10 border rounded-l-none border-primary-400 text-secondary-50 font-semibold text-lg'>
+                    className='w-24 bg-primary-400 rounded-r-2xl h-10 border rounded-l-none border-primary-400 text-secondary-50 font-semibold text-lg'>
                     Postar
                 </button>
             </div>

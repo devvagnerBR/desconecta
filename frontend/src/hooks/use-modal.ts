@@ -1,6 +1,6 @@
 import React from 'react';
 
-interface ModalProps {
+export interface ModalProps {
     isOpen: boolean;
     open: () => void;
     close: () => void;
@@ -24,6 +24,8 @@ export const useModal = (): ModalProps => {
         setIsOpen( false );
     };
     // preeciso tambem de uuma funcao que ao licar fora do modal feche 
+
+    
     
 
     React.useEffect( () => {

@@ -25,11 +25,12 @@ export const menuData = [
         icon: Icon.Bell,
         text: 'Salvos',
         route: '/salvos'
-    },
-    {
-        id: 5,
-        icon: Icon.Hash,
-        text: 'Hashtags',
-        route: '/hashtag'
-    },
+    // },
+    // {
+    //     id: 5,
+    //     icon: Icon.Hash,
+    //     text: 'Hashtags',
+    //     route: '/hashtag'
+    // },
+    }
 ]

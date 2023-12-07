@@ -1,5 +1,5 @@
 import { useUserContext } from '@/context/user-context'
-import { Avatar } from '@/components/header/avatar'
+
 import * as Icon from "@phosphor-icons/react"
 import { newPostModalBusiness } from './new-post-modal-business';
 
@@ -7,6 +7,7 @@ import { useModalContext } from '@/context/modal-context';
 import { PostType } from '@/requests/post-requests';
 import React from 'react';
 import { useToasts } from '@/hooks/use-toasts';
+import { Avatar } from '@/components';
 
 export const NewPostModal = () => {
 
@@ -53,7 +54,7 @@ export const NewPostModal = () => {
                 <div className='flex items-end justify-between mt-4 gap-2'>
 
                     <p className='text-secondary-600'>total de caracteres: {contentLength ?? '0'} /<span className='text-secondary-600'> 600</span> </p>
-                    <button className='bg-primary-400 rounded-sm h-10 border rounded-l-none border-primary-400 text-secondary-50 font-semibold text-lg px-4'>
+                    <button className='bg-primary-400 rounded-3xl h-10 border  border-primary-400 text-secondary-50 font-semibold text-lg px-4'>
                         Postar
                     </button>
                 </div>

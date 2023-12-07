@@ -3,14 +3,16 @@ import { Posts } from './posts'
 import React from 'react';
 import { usePostContext } from '@/context/post-context';
 import { PostBusiness } from './posts/posts-business';
+import { useSetTitlePage } from '@/hooks/use-title-page';
 
 
 export const Feed = () => {
 
 
     const { fetchNextPage } = PostBusiness()
+    useSetTitlePage( 'Página Inicial - Desconecta' )
 
-    
+
     React.useEffect( () => {
 
         const observer = new IntersectionObserver( ( entries ) => {
@@ -31,7 +33,7 @@ export const Feed = () => {
         <div className='border min-h-full h-fit w-full  py-4 px-2 bg-secondary-200'>
             <NewPostInput />
             <Posts />
-            <p className='' id='watch' />
+            <p id='watch' />
         </div>
     )
 }

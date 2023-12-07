@@ -1,29 +1,6 @@
 import * as Icon from "@phosphor-icons/react"
 
-/* 
 
-{
-    id: 1,
-        icon: Icon.House,
-            text: 'Página Inicial',
-                route: '/'
-},
-
-{
-    id: 3,
-        icon: Icon.User,
-            text: 'Perfil',
-                route: '/perfil'
-},
-{
-    id: 4,
-        icon: Icon.Bell,
-            text: 'Salvos',
-                route: '/salvos'
-}
-
-
-*/
 
 
 export const menuMobileData = [
@@ -44,7 +21,7 @@ export const menuMobileData = [
         id: 3,
         icon: Icon.User,
         text: 'Perfil',
-        route: '/perfil'
+        route: '/perfil/'
     },
     {
         id: 4,

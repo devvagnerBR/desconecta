@@ -1,5 +1,4 @@
 
-import { Avatar } from '@/components'
 import { getPageWidth } from '@/utils/get-page-width'
 import { textLimit } from '@/utils/text-limit'
 import * as Icon from "@phosphor-icons/react"
@@ -11,6 +10,7 @@ import { PostProps } from '@/types/post'
 import { PostBusiness } from '../posts-business'
 import { useUserContext } from '@/context/user-context'
 import { ModalPostOptions } from '../modal-post-options'
+import { Avatar } from '@/components'
 
 export interface CardPostProps {
     post: PostProps
