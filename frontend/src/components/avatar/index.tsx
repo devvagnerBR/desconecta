@@ -1,13 +1,9 @@
-import { useModalContext } from "@/context/modal-context"
-import { GO_TO_PROFILE } from "@/router/navigators"
 import { PostAuthor, User } from "@/types/user"
-import * as Icon from "@phosphor-icons/react"
-import React from "react"
-import { useLocation, useNavigate } from "react-router-dom"
+
 
 export const Avatar = ( { data, size = 12 }: { data: PostAuthor, size?: number } ) => {
 
-    const navigate = useNavigate()
+
 
     return (
         <>

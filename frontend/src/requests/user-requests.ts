@@ -1,6 +1,7 @@
 import { api } from "@/libs/axios";
 import { getCookie, removeCookie, setCookie } from "@/libs/cookies-js";
 import { queryClient } from "@/libs/react-query";
+import { GO_TO_LOGIN } from "@/router/navigators";
 import { useMutation } from "react-query";
 import { useNavigate } from "react-router-dom";
 
@@ -47,6 +48,10 @@ export const userRequests = () => {
         return profile.data
     }
 
+    const logOut = async () => {
+        removeCookie( "token" )
+        await queryClient.invalidateQueries( ["user"] )
+    }
 
-    return { login, register, getUserProfile }
+    return { login, register, getUserProfile, logOut }
 }

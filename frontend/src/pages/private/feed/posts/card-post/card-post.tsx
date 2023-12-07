@@ -11,6 +11,8 @@ import { PostBusiness } from '../posts-business'
 import { useUserContext } from '@/context/user-context'
 import { ModalPostOptions } from '../modal-post-options'
 import { Avatar } from '@/components'
+import { useNavigate } from 'react-router-dom'
+import { GO_TO_OTHER_USER_PROFILE } from '../../../../../router/navigators';
 
 export interface CardPostProps {
     post: PostProps
@@ -21,6 +23,7 @@ export const CardPost = ( { post }: CardPostProps ) => {
     const author = post?.author
     const { data: user } = useUserContext()
     const { size } = getPageWidth()
+    const navigate = useNavigate()
 
     const { handleToggleLike
     } = PostBusiness()
@@ -39,7 +42,9 @@ export const CardPost = ( { post }: CardPostProps ) => {
                 showOptionsMenu={showOptionsMenu} />
 
             <header className='flex h-12 items-center gap-2'>
-                <div className="w-full flex gap-4 h-full items-center justify-start pr-2">
+                <div
+                    onClick={() => GO_TO_OTHER_USER_PROFILE( navigate, author?.username )()}
+                    className="w-full flex gap-4 h-full  items-center justify-start pr-2 cursor-pointer ">
                     <div className="flex flex-col order-1  gap-1 shrink-0 no_click">
                         <div className='flex items-end gap-2'>
                             <p className="text-start text-lg leading-none">{author?.username}</p>

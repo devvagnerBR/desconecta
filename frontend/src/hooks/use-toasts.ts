@@ -45,12 +45,27 @@ export const useToasts = () => {
         }
     );
 
+    const logOutNotify = () => toast.promise(
+        new Promise( ( resolve, reject ) => {
+            setTimeout( () => {
+                resolve( 'Saindo...' );
+            }, 1500 );
+        } ),
+        {
+            loading: 'Saindo...',
+            success: 'Você foi deslogado com sucesso!',
+            error: 'Ocorreu um erro ao sair!',
+        }
+
+    );
+
     return {
         copyPostToClipBoardNotify,
         savePostNofity,
         deletePostNotify,
         cretePostNotify,
-        deleteCommentNotify
+        deleteCommentNotify,
+        logOutNotify
     }
 
 }
