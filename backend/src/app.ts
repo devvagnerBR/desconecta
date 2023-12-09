@@ -1,20 +1,21 @@
-import fastifyCookie from "@fastify/cookie";
-import fastify from "fastify";
 import { env } from "@/env";
-import fastifyJwt from "@fastify/jwt";
-import { userRoutes } from "./routes/user-routes";
+import fastify from "fastify";
 import { ZodError } from "zod";
-import { CustomError } from "./entities/custom-error";
 import cors from '@fastify/cors'
+import fastifyJwt from "@fastify/jwt";
+import fastifyCookie from "@fastify/cookie";
+import { userRoutes } from "./routes/user-routes";
 import { postRoutes } from "./routes/post-routes";
 import { adminRoutes } from "./routes/admin-routes";
 import { systemRoutes } from "./routes/system-routes";
+import { CustomError } from "./entities/custom-error";
 
 export const app = fastify();
 
 
 app.register( cors, {
-    origin: '*',
+    origin: 'http://localhost:5173',
+    credentials: true
 } );
 
 

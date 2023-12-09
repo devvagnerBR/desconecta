@@ -29,17 +29,17 @@ export const USER_CONTROLLER = async () => {
         if ( !registerBody.success ) return res.status( 400 ).send( registerBody.error.format() )
 
         await userFactory.create( registerBody.data )
-        const userId = await userFactory.authenticate( { email: registerBody.data.email, password: registerBody.data.password } );
+        const user = await userFactory.authenticate( { email: registerBody.data.email, password: registerBody.data.password } );
 
-        const token = await res.jwtSign( { sub: userId } );
-        const refreshToken = await res.jwtSign( { sub: userId }, { expiresIn: '7d' } );
+        const token = await res.jwtSign( { sub: user.id, role: user.role }, { expiresIn: 15 } ); // 15 segundos
+        const refreshToken = await res.jwtSign( { sub: user.id, role: user.role }, { expiresIn: '7d' } );
 
         return res.setCookie( 'refreshToken', refreshToken, {
             path: '/',
             secure: true,
             sameSite: true,
             httpOnly: true
-        } ).status( 201 ).send( { token } )
+        } ).status( 201 ).send( { token, refreshToken, role: user.role } )
 
     }
 
@@ -58,16 +58,41 @@ export const USER_CONTROLLER = async () => {
         const registerBody = registerBodySchema.safeParse( req.body )
         if ( !registerBody.success ) return res.status( 400 ).send( registerBody.error.format() );
 
-        const userId = await userFactory.authenticate( registerBody.data );
-        const token = await res.jwtSign( { sub: userId } );
-        const refreshToken = await res.jwtSign( { sub: userId }, { expiresIn: '7d' } );
+        const user = await userFactory.authenticate( { email: registerBody.data.email, password: registerBody.data.password } );
+        const token = await res.jwtSign( { sub: user.id, role: user.role }, { expiresIn: 15 } ); // 15 segundos
+        const refreshToken = await res.jwtSign( { sub: user.id, role: user.role }, { expiresIn: '7d' } );
 
         return res.setCookie( 'refreshToken', refreshToken, {
             path: '/',
             secure: true,
             sameSite: true,
             httpOnly: true
-        } ).send( { token } )
+        } ).send( { token, refreshToken, role: user.role } )
+    }
+
+    const refreshToken = async ( req: FastifyRequest, res: FastifyReply ) => {
+
+        await req.jwtVerify( { onlyCookie: true } );
+
+        const token = await res.jwtSign(
+            {
+                sub: req.user.sub,
+                role: req.user.role
+            }, { expiresIn: 60 * 10 } ); // 10 minutos
+
+        const refreshToken = await res.jwtSign(
+            {
+                sub: req.user.sub,
+                role: req.user.role
+            }, { expiresIn: '7d' } );
+
+        return res.setCookie( 'refreshToken', refreshToken, {
+            path: '/',
+            secure: true,
+            sameSite: true,
+            httpOnly: true
+        } ).status( 200 ).send( { token, refreshToken, role: req.user.role } )
+
     }
 
     const profile = async ( req: FastifyRequest, res: FastifyReply ) => {
@@ -174,7 +199,8 @@ export const USER_CONTROLLER = async () => {
         sendCodeValidation,
         validateAccount,
         getUserPosts,
-        upsertUserInfos
+        upsertUserInfos,
+        refreshToken
     }
 
 }

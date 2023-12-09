@@ -1,5 +1,5 @@
 import { USER_DATABASE } from '../data/user-database';
-import { Prisma } from '@prisma/client';
+import { Prisma, User } from '@prisma/client';
 import *  as bcrypt from 'bcryptjs';
 import { env } from '@/env';
 import { CustomError } from '@/entities/custom-error';
@@ -52,7 +52,7 @@ export class USER_BUSINESS {
         await this.userDatabase.create( data, code )
     }
 
-    async authenticate( data: AuthenticateRequest ): Promise<string> {
+    async authenticate( data: AuthenticateRequest ): Promise<User> {
 
         const user = await this.userDatabase.findByEmail( data.email )
         if ( !user ) throw new CustomError( 404, "usuário não encontrado" )
@@ -60,7 +60,7 @@ export class USER_BUSINESS {
         const doesPasswordMatch = await bcrypt.compare( data.password, user.password )
         if ( !doesPasswordMatch ) throw new CustomError( 401, "credencias inválidas" )
 
-        return user.id
+        return user
     }
 
     async profile( userId: string ) {

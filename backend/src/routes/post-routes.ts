@@ -6,7 +6,7 @@ import { FastifyInstance } from 'fastify';
 export const postRoutes = async ( app: FastifyInstance ) => {
 
     const post = await POST_CONTROLLER()
-    app.addHook( 'onRequest', verifyJWT )
+    app.addHook( 'preHandler', verifyJWT )
 
     //post
     app.get( '/post', post.getPosts )
