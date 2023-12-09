@@ -34,7 +34,7 @@ export const USER_CONTROLLER = async () => {
         const token = await res.jwtSign( { sub: user.id, role: user.role }, { expiresIn: 15 } ); // 15 segundos
         const refreshToken = await res.jwtSign( { sub: user.id, role: user.role }, { expiresIn: '7d' } );
 
-        return res.setCookie( 'refreshToken', refreshToken, {
+        return res.setCookie( 'refresh_token', refreshToken, {
             path: '/',
             secure: true,
             sameSite: true,
@@ -59,15 +59,28 @@ export const USER_CONTROLLER = async () => {
         if ( !registerBody.success ) return res.status( 400 ).send( registerBody.error.format() );
 
         const user = await userFactory.authenticate( { email: registerBody.data.email, password: registerBody.data.password } );
-        const token = await res.jwtSign( { sub: user.id, role: user.role }, { expiresIn: 15 } ); // 15 segundos
-        const refreshToken = await res.jwtSign( { sub: user.id, role: user.role }, { expiresIn: '7d' } );
 
-        return res.setCookie( 'refreshToken', refreshToken, {
+        const token = await res.jwtSign(
+            {
+                sub: user.id,
+                role: user.role
+            }, { expiresIn: 10 * 60 } ); // 10 minutos
+
+
+        const refreshToken = await res.jwtSign(
+            {
+                sub: user.id,
+                role: user.role
+            }, { expiresIn: '7d' } );
+
+
+
+        return res.setCookie( 'refresh_token', refreshToken, {
             path: '/',
             secure: true,
             sameSite: true,
             httpOnly: true
-        } ).send( { token, refreshToken, role: user.role } )
+        } ).status( 200 ).send( { token, refresh_token: refreshToken, role: user.role } )
     }
 
     const refreshToken = async ( req: FastifyRequest, res: FastifyReply ) => {
@@ -78,7 +91,8 @@ export const USER_CONTROLLER = async () => {
             {
                 sub: req.user.sub,
                 role: req.user.role
-            }, { expiresIn: 60 * 10 } ); // 10 minutos
+            }, { expiresIn: 10 * 60 } ); // 10 minutos
+        // }, { expiresIn: 60 * 10 } ); // 10 minutos
 
         const refreshToken = await res.jwtSign(
             {
@@ -86,12 +100,12 @@ export const USER_CONTROLLER = async () => {
                 role: req.user.role
             }, { expiresIn: '7d' } );
 
-        return res.setCookie( 'refreshToken', refreshToken, {
+        return res.setCookie( 'refresh_token', refreshToken, {
             path: '/',
             secure: true,
             sameSite: true,
             httpOnly: true
-        } ).status( 200 ).send( { token, refreshToken, role: req.user.role } )
+        } ).status( 200 ).send( { token, refresh_token: refreshToken, role: req.user.role } )
 
     }
 
