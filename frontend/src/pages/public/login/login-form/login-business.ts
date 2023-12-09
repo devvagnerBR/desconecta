@@ -61,7 +61,7 @@ export const loginBusiness = () => {
 
     let loginErrorMessage: string | undefined
     if ( login.error ) {
-        let { response: { data: { message: msg } } }: LoginError = login.error as LoginError;
+        let { response: { data: { message: msg } } }: LoginError = login?.error as LoginError;
         loginErrorMessage = msg
     }
 

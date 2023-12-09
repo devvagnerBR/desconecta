@@ -19,17 +19,20 @@ export type RegisterFormProps = {
 export const userRequests = () => {
 
     const token = getCookie( "token" )
-
     const navigate = useNavigate()
 
     const login = useMutation( {
         mutationFn: async ( { email, password }: UserLoginRequest ) => {
             removeCookie( "token" )
             await queryClient.invalidateQueries( ["user"] )
-            const res = await api.post( '/user/auth', { email, password } );
+            const res = await api.post<{ token: string, refreshToken: string, role: "ADMIN" | "USER" }>( '/user/auth', { email, password } );
             setCookie( "token", res.data.token )
+            setCookie( "refresh-token", res.data.refreshToken )
         },
-        onSuccess: () => navigate( "/" )
+        onSuccess: () => {
+            api.defaults.headers.Authorization = `Bearer ${token}`
+            navigate( "/" )
+        }
     } )
 
     const register = useMutation( {

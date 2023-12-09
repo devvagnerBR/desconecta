@@ -1,10 +1,10 @@
 import { NewPostInput } from '@/pages/private/feed/new-post/new-post-input'
 import { Posts } from './posts'
 import React from 'react';
-import { usePostContext } from '@/context/post-context';
 import { PostBusiness } from './posts/posts-business';
 import { useSetTitlePage } from '@/hooks/use-title-page';
-
+import { api } from '@/libs/axios';
+import { getCookie } from '@/libs/cookies-js';
 
 export const Feed = () => {
 
@@ -24,7 +24,6 @@ export const Feed = () => {
         return () => observer.disconnect()
 
     }, [] )
-
 
 
 

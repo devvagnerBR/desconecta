@@ -5,26 +5,34 @@ import { useQuery } from "react-query";
 import { User } from "@/types/user";
 
 
-interface UserContextProps {
+
+interface UserContextData {
     isLogged: boolean,
     setIsLogged: React.Dispatch<React.SetStateAction<boolean>>
     data: User | undefined
 }
 
-const UserContext = React.createContext<UserContextProps | null>( null )
+const UserContext = React.createContext<UserContextData | null>( null )
 
 const UserContextProvider = ( { children }: React.PropsWithChildren ) => {
 
     const [isLogged, setIsLogged] = React.useState<boolean>( !!getCookie( "token" ) )
-
     const { getUserProfile } = userRequests()
 
     const { data } = useQuery<User>( {
         queryKey: ["user"],
         queryFn: getUserProfile,
         refetchOnWindowFocus: false,
+        staleTime: 1000 * 60, // 1 min
         enabled: !!getCookie( "token" )
     } )
+
+    React.useEffect( () => {
+        if ( !!data && getCookie( "token" ) ) {
+            setIsLogged( true )
+        }
+    }, [data] )
+
 
     return (
         <UserContext.Provider value={{ isLogged, setIsLogged, data }}>

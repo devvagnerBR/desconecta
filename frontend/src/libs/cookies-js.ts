@@ -2,8 +2,8 @@ import Cookies from 'js-cookie';
 
 export const setCookie = ( key: string, value: string ) => {
     Cookies.set( key, value, {
-        expires: 3, // 
-        path: '/'
+        expires: 60 * 60 * 24 * 30, // 30 days
+        path: '/' // cookie available in all pages
     } )
 }
 
