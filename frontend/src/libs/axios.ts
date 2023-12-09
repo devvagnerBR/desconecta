@@ -1,5 +1,5 @@
 import axios, { AxiosError } from "axios";
-import { getCookie, setCookie } from "./cookies-js";
+import { getCookie, removeCookie, setCookie } from "./cookies-js";
 
 let token = getCookie( "token" );
 let isRefreshing = false;
@@ -18,7 +18,9 @@ interface ErrorResponse {
 }
 
 api.interceptors.response.use( response => {
+
     return response;
+
 }, ( error: AxiosError<ErrorResponse> ) => {
     if ( error.response?.status === 401 ) {
         if ( error.response.data.message === "Não autorizado ou token inválido" ) {
@@ -29,16 +31,19 @@ api.interceptors.response.use( response => {
             if ( !isRefreshing ) {
 
                 isRefreshing = true;
+
                 api.get( "/token/refresh", )
                     .then( response => {
-                        setCookie( "token", response.data.token );
-                        setCookie( "refresh-token", response.data.refreshToken );
-                        api.defaults.headers.Authorization = `Bearer ${response.data.token}`;
-                        failedQueue.forEach( ( request: any ) => request.onSuccess( response.data.token ) );
+
+                        setCookie( "token", response?.data.token );
+                        setCookie( "refresh_token", response?.data?.refresh_token );
+                        api.defaults.headers.Authorization = `Bearer ${response?.data.token}`;
+                        failedQueue.forEach( ( request: any ) => request.onSuccess( response.data?.token ) );
                         failedQueue = [];
                     } ).catch( err => {
                         failedQueue.forEach( ( request: any ) => request.onFailure( err ) );
                         failedQueue = [];
+                        console.log( err )
                         return Promise.reject( err );
                     } ).finally( () => {
                         isRefreshing = false;
@@ -59,7 +64,11 @@ api.interceptors.response.use( response => {
 
         } else {
 
-
+            removeCookie( "token" );
+            removeCookie( "refresh_token" );
+            window.location.href = "/entrar";
         }
     }
+
+    return Promise.reject( error );
 } );

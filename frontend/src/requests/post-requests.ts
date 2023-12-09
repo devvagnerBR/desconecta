@@ -1,7 +1,4 @@
 import { api } from "@/libs/axios";
-import { getCookie } from "@/libs/cookies-js";
-
-
 
 export enum PostType {
     PUBLIC = "PUBLIC",
@@ -10,53 +7,43 @@ export enum PostType {
 
 export const postRequests = () => {
 
-    const token = getCookie( "token" );
-
-
     const getPosts = async ( type?: PostType, page?: number ) => {
-        const response = await api.get(
-            '/post',
-            {
-                headers: { Authorization: `Bearer ${token}` },
-                params: { type, page: page?.toString() }
-            } );
 
-        return response.data;
+        try {
+            const response = await api.get(
+                '/post',
+                {
+                    params: { type, page: page?.toString() }
+                } );
+
+            return response.data;
+        } catch ( error: any ) {
+            throw new Error( error.response.data.message );
+        }
+
     }
 
     const createPost = async ( content: string, type: PostType ): Promise<void> => {
-        await api.post( '/post', { content, type }, {
-            headers: { Authorization: `Bearer ${token}` }
-        } );
+        await api.post( '/post', { content, type } );
     }
 
     const createComment = async ( postId: string, content: string ): Promise<void> => {
-        await api.post( `/post/${postId}/comment`, { content }, {
-            headers: { Authorization: `Bearer ${token}` }
-        } );
+        await api.post( `/post/${postId}/comment`, { content } );
     }
 
     const toggleLike = async ( postId: string ): Promise<void> => {
-        await api.post( `/post/${postId}/like`, {}, {
-            headers: { Authorization: `Bearer ${token}` }
-        } );
+        await api.post( `/post/${postId}/like` );
     }
 
     const deletePost = async ( postId: string ): Promise<void> => {
         await api.patch(
-            `/post/${postId}/delete`,
-            {},
-            {
-                headers: { Authorization: `Bearer ${token}` }
-            } );
+            `/post/${postId}/delete` );
     }
 
 
     const deleteComment = async ( commentId: string ): Promise<void> => {
         await api.delete(
-            `/post/${commentId}/comment/delete`,
-            { headers: { Authorization: `Bearer ${token}` } } );
-
+            `/post/${commentId}/comment/delete` );
     }
 
     return {

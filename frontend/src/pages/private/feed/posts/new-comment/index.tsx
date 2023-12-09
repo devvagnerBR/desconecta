@@ -1,6 +1,5 @@
-import { Avatar } from '@/components'
+
 import { useUserContext } from '@/context/user-context'
-import React from 'react'
 import { newCommentBusiness } from './new-comment-business'
 
 export const NewComment = ( { postId }: { postId: string } ) => {

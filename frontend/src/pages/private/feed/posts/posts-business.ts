@@ -2,10 +2,11 @@ import { useUserContext } from "@/context/user-context"
 import { queryClient } from "@/libs/react-query"
 import { postRequests } from "@/requests/post-requests"
 import { PostProps } from "@/types/post"
-import { useInfiniteQuery, useMutation, useQuery } from "react-query"
+import { useInfiniteQuery, useMutation } from "react-query"
 import React from 'react';
 import { usePostContext } from "@/context/post-context"
 import { useModalContext } from "@/context/modal-context"
+
 
 
 
@@ -13,8 +14,9 @@ export const PostBusiness = () => {
 
     const req = postRequests()
     const user = useUserContext()
-    const { postType  } = usePostContext()
+    const { postType } = usePostContext()
     const { deletePost } = useModalContext()
+
 
     const {
         data,
@@ -24,10 +26,9 @@ export const PostBusiness = () => {
         queryKey: ["posts", postType],
         queryFn: ( { pageParam = 1 } ) => req.getPosts( postType, pageParam ),
         getNextPageParam: ( lastPage, allPages ) => {
-
             return allPages.length + 1
         },
-        refetchOnWindowFocus: false,
+        refetchOnWindowFocus: false
     } );
 
     const newPosts = data?.pages.flatMap( page => page )

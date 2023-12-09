@@ -1,11 +1,10 @@
-import { usePostContext } from '@/context/post-context'
 import React from 'react'
-
-import * as Icon from "@phosphor-icons/react"
-import { useModalContext } from '@/context/modal-context'
 import { PostProps } from '@/types/post'
-import { copyToClipboard } from '@/utils/copy-to-clipboard'
+import * as Icon from "@phosphor-icons/react"
 import { useToasts } from '@/hooks/use-toasts';
+import { usePostContext } from '@/context/post-context'
+import { useModalContext } from '@/context/modal-context'
+import { copyToClipboard } from '@/utils/copy-to-clipboard'
 
 interface ModalPostOptionsProps {
 
@@ -48,20 +47,27 @@ export const ModalPostOptions = ( { post, showOptionsMenu, setShowOptionsMenu }:
                 onClick={() => {
                     copyToClipboard( "/post", post.id )
                     copyPostToClipBoardNotify()
+                    setShowOptionsMenu( false )
                 }}
                 className='h-8 hover:bg-secondary-200 hover:rounded-sm w-full active:bg-primary-400 active:text-secondary-50 duration-150 gap-2 transition-all cursor-pointer p-1 flex items-center justify-start'>
                 <Icon.Copy size={24} weight='light' className='fill-secondary-800' />
                 Copiar link da publicação
             </p>
             <p
-                onClick={() => savePostNofity()}
+                onClick={() => {
+                    savePostNofity()
+                    setShowOptionsMenu( false )
+                }}
                 className='h-8 hover:bg-secondary-200 hover:rounded-sm w-full gap-2 transition-all cursor-pointer p-1 flex items-center justify-start'>
                 <Icon.BookmarkSimple size={24} weight='light' className='fill-secondary-800' />
                 Salvar publicação
             </p>
             {post.is_author &&
                 <p
-                    onClick={async () => deletePost.open()}
+                    onClick={async () => {
+                        deletePost.open()
+                        setShowOptionsMenu( false )
+                    }}
                     className='h-8 hover:bg-secondary-200 hover:rounded-sm w-full  gap-2 transition-all cursor-pointer  p-1 flex items-center justify-start'>
                     <Icon.Trash size={24} weight='light' className='fill-secondary-800' />
                     Deletar publicação

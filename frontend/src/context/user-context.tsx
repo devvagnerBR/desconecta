@@ -1,8 +1,10 @@
 import React from "react";
-import { getCookie } from "@/libs/cookies-js";
+import { getCookie, removeCookie } from "@/libs/cookies-js";
 import { userRequests } from "@/requests";
 import { useQuery } from "react-query";
 import { User } from "@/types/user";
+import { useLocation, useNavigate, Navigate } from 'react-router-dom';
+import { GO_TO_LOGIN } from "@/router/navigators";
 
 
 
@@ -16,16 +18,29 @@ const UserContext = React.createContext<UserContextData | null>( null )
 
 const UserContextProvider = ( { children }: React.PropsWithChildren ) => {
 
-    const [isLogged, setIsLogged] = React.useState<boolean>( !!getCookie( "token" ) )
     const { getUserProfile } = userRequests()
+    const navigate = useNavigate()
+    const [isLogged, setIsLogged] = React.useState<boolean>( !!getCookie( "token" ) )
+
+    const { pathname } = useLocation()
+    const isAuthenticateRoute = pathname === "/entrar" || pathname === "/criar-conta"
+
 
     const { data } = useQuery<User>( {
         queryKey: ["user"],
         queryFn: getUserProfile,
         refetchOnWindowFocus: false,
         staleTime: 1000 * 60, // 1 min
-        enabled: !!getCookie( "token" )
+        enabled: !!getCookie( "token" ) && !isAuthenticateRoute,
+        onError: () => {
+            removeCookie( "token" )
+            removeCookie( "refresh_token" )
+            setIsLogged( false )
+            GO_TO_LOGIN( navigate )()
+        } 
     } )
+
+
 
     React.useEffect( () => {
         if ( !!data && getCookie( "token" ) ) {
