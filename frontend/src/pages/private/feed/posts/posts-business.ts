@@ -6,6 +6,8 @@ import { useInfiniteQuery, useMutation } from "react-query"
 import React from 'react';
 import { usePostContext } from "@/context/post-context"
 import { useModalContext } from "@/context/modal-context"
+import { GO_TO_LOGIN } from "@/router/navigators"
+import { useNavigate } from "react-router-dom"
 
 
 
@@ -13,6 +15,7 @@ import { useModalContext } from "@/context/modal-context"
 export const PostBusiness = () => {
 
     const req = postRequests()
+    const navigate = useNavigate()
     const user = useUserContext()
     const { postType } = usePostContext()
     const { deletePost } = useModalContext()
@@ -28,7 +31,10 @@ export const PostBusiness = () => {
         getNextPageParam: ( lastPage, allPages ) => {
             return allPages.length + 1
         },
-        refetchOnWindowFocus: false
+        refetchOnWindowFocus: false,
+        onError: () => {
+            GO_TO_LOGIN( navigate )
+        }
     } );
 
     const newPosts = data?.pages.flatMap( page => page )

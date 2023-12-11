@@ -17,16 +17,12 @@ export const Routers = () => {
                     <div className='flex h-full'>
                         <SidebarMenu />
                         <Routes>
-
                             <Route path='/entrar' element={<Login />} />
                             <Route path='/criar-conta' element={<Register />} />
                             <Route path='/' element={<Feed />} />
                             <Route path='/perfil/:username' element={<Profile />} />
                             <Route path='/notificacoes' element={< Notifications />} />
-
-                            {/* //verificar a rota de perfil ou de outros usuarios */}
                             <Route path='/des/:username' element={< Profile />} />
-
                             <Route path='/salvos' element={< Saved />} />
                             <Route path='/hashtag' element={< Hashtags />} />
                             <Route path='/pesquisar' element={< Search />} />

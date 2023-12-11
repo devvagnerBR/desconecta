@@ -25,7 +25,7 @@ export const ModalProfileMenu = () => {
             className='absolute z-50 flex flex-col items-center min-w-[126px] right-2 top-[55px] rounded-md bg-secondary-50 border p-2'>
             <li
                 onClick={() => {
-                    GO_TO_PROFILE( navigate, user?.username.toLowerCase()! )()
+                    GO_TO_PROFILE( navigate, user?.username.toLowerCase()! )
                     modalProfileMenu.close()
                 }}
                 className=' rounded-md w-full h-8 items-center justify-center flex hover:cursor-pointer hover:bg-secondary-200 transition-all'>

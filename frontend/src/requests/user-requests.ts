@@ -49,8 +49,8 @@ export const userRequests = () => {
 
     const getUserProfile = async () => {
 
-            const profile = await api.get( '/user' )
-            return profile.data
+        const profile = await api.get( '/user' )
+        return profile.data
     }
 
     const logOut = async () => {

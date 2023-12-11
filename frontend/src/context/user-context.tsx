@@ -3,10 +3,8 @@ import { getCookie, removeCookie } from "@/libs/cookies-js";
 import { userRequests } from "@/requests";
 import { useQuery } from "react-query";
 import { User } from "@/types/user";
-import { useLocation, useNavigate, Navigate } from 'react-router-dom';
-import { GO_TO_LOGIN } from "@/router/navigators";
-
-
+import { useLocation, useNavigate } from 'react-router-dom';
+import { GO_TO_HOMEPAGE, GO_TO_LOGIN } from "@/router/navigators";
 
 interface UserContextData {
     isLogged: boolean,
@@ -25,29 +23,29 @@ const UserContextProvider = ( { children }: React.PropsWithChildren ) => {
     const { pathname } = useLocation()
     const isAuthenticateRoute = pathname === "/entrar" || pathname === "/criar-conta"
 
-
     const { data } = useQuery<User>( {
         queryKey: ["user"],
         queryFn: getUserProfile,
         refetchOnWindowFocus: false,
         staleTime: 1000 * 60, // 1 min
-        enabled: !!getCookie( "token" ) && !isAuthenticateRoute,
+        enabled: !!getCookie( "token" ),
         onError: () => {
             removeCookie( "token" )
             removeCookie( "refresh_token" )
             setIsLogged( false )
-            GO_TO_LOGIN( navigate )()
-        } 
+            GO_TO_LOGIN( navigate )
+            console.log("CAI AQUI")
+        }
     } )
 
-
+    React.useLayoutEffect( () => {
+        if ( !!data && getCookie( "token" ) ) setIsLogged( true )
+        else setIsLogged( false )
+    }, [data, pathname, navigate] )
 
     React.useEffect( () => {
-        if ( !!data && getCookie( "token" ) ) {
-            setIsLogged( true )
-        }
-    }, [data] )
-
+        if ( isLogged && !!data && isAuthenticateRoute ) GO_TO_HOMEPAGE( navigate )
+    }, [isLogged] )
 
     return (
         <UserContext.Provider value={{ isLogged, setIsLogged, data }}>

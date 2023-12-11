@@ -9,7 +9,7 @@ export const postRequests = () => {
 
     const getPosts = async ( type?: PostType, page?: number ) => {
 
-        try {
+      
             const response = await api.get(
                 '/post',
                 {
@@ -17,9 +17,7 @@ export const postRequests = () => {
                 } );
 
             return response.data;
-        } catch ( error: any ) {
-            throw new Error( error.response.data.message );
-        }
+     
 
     }
 

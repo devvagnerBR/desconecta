@@ -3,6 +3,7 @@ import { userRequests } from "."
 import { GO_TO_LOGIN } from "@/router/navigators"
 import { useNavigate } from "react-router-dom"
 import { useToasts } from "@/hooks/use-toasts"
+import { removeCookie } from "@/libs/cookies-js"
 
 
 
@@ -16,7 +17,9 @@ export const mutations = () => {
         mutationFn: logOut,
         onSuccess: async () => {
             await logOutNotify()
-            GO_TO_LOGIN( navigate )()
+            removeCookie( "token" )
+            removeCookie( "refresh_token" )
+            GO_TO_LOGIN( navigate )
         }
     } )
 

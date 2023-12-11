@@ -43,7 +43,9 @@ api.interceptors.response.use( response => {
                     } ).catch( err => {
                         failedQueue.forEach( ( request: any ) => request.onFailure( err ) );
                         failedQueue = [];
-                        console.log( err )
+                        removeCookie( "token" );
+                        removeCookie( "refresh_token" );
+                        window.location.href = "/entrar";
                         return Promise.reject( err );
                     } ).finally( () => {
                         isRefreshing = false;
