@@ -31,8 +31,17 @@ export const USER_CONTROLLER = async () => {
         await userFactory.create( registerBody.data )
         const user = await userFactory.authenticate( { email: registerBody.data.email, password: registerBody.data.password } );
 
-        const token = await res.jwtSign( { sub: user.id, role: user.role }, { expiresIn: 15 } ); // 15 segundos
-        const refreshToken = await res.jwtSign( { sub: user.id, role: user.role }, { expiresIn: '7d' } );
+        const token = await res.jwtSign(
+            {
+                sub: user.id,
+                role: user.role
+            }, { expiresIn: 15 * 60 } ); // 15 minutos
+
+        const refreshToken = await res.jwtSign(
+            {
+                sub: user.id,
+                role: user.role
+            }, { expiresIn: '7d' } );
 
         return res.setCookie( 'refresh_token', refreshToken, {
             path: '/',
@@ -64,7 +73,7 @@ export const USER_CONTROLLER = async () => {
             {
                 sub: user.id,
                 role: user.role
-            }, { expiresIn: 10 * 60 } ); // 10 minutos
+            }, { expiresIn: 15 * 60 } ); // 10 minutos
 
 
         const refreshToken = await res.jwtSign(
@@ -91,7 +100,7 @@ export const USER_CONTROLLER = async () => {
             {
                 sub: req.user.sub,
                 role: req.user.role
-            }, { expiresIn: 10 * 60 } ); // 10 minutos
+            }, { expiresIn: 15 * 60 } ); // 10 minutos
         // }, { expiresIn: 60 * 10 } ); // 10 minutos
 
         const refreshToken = await res.jwtSign(

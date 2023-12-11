@@ -82,7 +82,7 @@ export class USER_DATABASE {
             }
         } )
 
-        return user
+        return { ...user, UserInfos: user?.UserInfos[0] ?? null }
     }
 
     async findByEmail( email: string ): Promise<User | null> {
