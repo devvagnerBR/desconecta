@@ -10,6 +10,7 @@ export class USER_DATABASE {
     async create( data: CreateUserRequest, code: string ): Promise<void> {
         const user = await PRISMA.user.create( {
             data: {
+                name: data.name,
                 username: data.username,
                 password: data.password,
                 email: data.email,
@@ -100,15 +101,22 @@ export class USER_DATABASE {
         return user;
     }
 
-    async update( userId: string, data: Prisma.UserUpdateInput ) {
+    async update( userId: string, data: { username?: string, name?: string, title?: string } ) {
+        
         await PRISMA.user.update( {
             where: { id: userId }, data: {
-                email: data.email,
                 username: data.username,
-                avatar: data.avatar,
-                password: data.password,
+                name: data.name,
             }
         } )
+
+        if ( data.title ) {
+            await PRISMA.userInfos.update( {
+                where: { user_id: userId }, data: {
+                    headline: data.title
+                }
+            } )
+        }
     }
 
     async getUserPosts( userId: string ) {

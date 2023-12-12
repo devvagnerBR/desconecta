@@ -8,6 +8,7 @@ import { ValidateAccount } from '@/libs/nodemailer';
 
 
 interface RegisterRequest {
+    name: string
     username: string;
     email: string;
     password: string;
@@ -26,7 +27,7 @@ export class USER_BUSINESS {
         private courseDatabase: COURSE_DATABASE
     ) { }
 
-    async create( { username, email, password, course_id }: RegisterRequest ): Promise<void> {
+    async create( { name, username, email, password, course_id }: RegisterRequest ): Promise<void> {
 
         const passwordHash = await bcrypt.hash( password, env.BCRYPT_SALT )
 
@@ -43,6 +44,7 @@ export class USER_BUSINESS {
         const code = await nodeMailer.generateCode();
 
         const data: RegisterRequest = {
+            name,
             username,
             email,
             password: passwordHash,
@@ -69,11 +71,10 @@ export class USER_BUSINESS {
         return user
     }
 
-    async update( userId: string, data: Prisma.UserUpdateInput ) {
+    async update( userId: string, data: { username?: string, name?: string, title?: string } ) {
 
         const user = await this.userDatabase.findById( userId )
         if ( !user ) throw new CustomError( 404, "usuário não encontrado" )
-
         await this.userDatabase.update( userId, data )
     }
 
