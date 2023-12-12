@@ -1,4 +1,5 @@
 import { useModal } from "@/hooks/use-modal";
+
 import { setBodyAsOverflowHidden } from "@/utils/set-body-as-overflow-hidden";
 import React from "react";
 
@@ -17,13 +18,16 @@ const ModalContext = React.createContext<ModalContext | null>( null )
 
 const ModalContextProvider = ( { children }: React.PropsWithChildren ) => {
 
+
+
     const newPost = useModal()
     const deletePost = useModal()
     const deleteComment = useModal()
     const modalProfileMenu = useModal()
 
 
-    const shouldSetOverflowhidden = newPost.isOpen || deletePost.isOpen || deleteComment.isOpen 
+
+    const shouldSetOverflowhidden = newPost.isOpen || deletePost.isOpen || deleteComment.isOpen
     setBodyAsOverflowHidden( shouldSetOverflowhidden )
 
 

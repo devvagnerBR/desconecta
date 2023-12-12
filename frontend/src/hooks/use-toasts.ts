@@ -56,7 +56,19 @@ export const useToasts = () => {
             success: 'Você foi deslogado com sucesso!',
             error: 'Ocorreu um erro ao sair!',
         }
+    );
 
+    const updateProfileNotify = () => toast.promise(
+        new Promise( ( resolve, reject ) => {
+            setTimeout( () => {
+                resolve( 'Atualizando...' );
+            }, 1500 );
+        } ),
+        {
+            loading: 'Atualizando...',
+            success: 'Perfil atualizado com sucesso!',
+            error: 'Ocorreu um erro ao atualizar o perfil!',
+        }
     );
 
     return {
@@ -65,7 +77,8 @@ export const useToasts = () => {
         deletePostNotify,
         cretePostNotify,
         deleteCommentNotify,
-        logOutNotify
+        logOutNotify,
+        updateProfileNotify
     }
 
 }

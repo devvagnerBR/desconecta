@@ -1,23 +1,37 @@
 import React, { Fragment } from 'react'
 import { Dialog, Transition } from '@headlessui/react'
 import { updateDataBusiness } from './updata-data-business'
+import { queryClient } from '@/libs/react-query'
 
 
 interface ModalUpdateDataProps {
     openModal: () => void,
     closeModal: () => void,
-    isOpen: boolean
+    isOpen: boolean,
+    bio: {
+        name: string
+        username: string
+        course: string
+        headline: string
+        address: string
+        email: string
+        phone: string
+    }
 }
 
-/*
-name        
-username:
-email:
-password:
-avatar:
+export const ModalUpdateData = ( { closeModal, isOpen, bio }: ModalUpdateDataProps ) => {
 
-*/
-export const ModalUpdateData = ( { closeModal, isOpen }: ModalUpdateDataProps ) => {
+
+    const { register,
+        onSubmit,
+        watch
+    } = updateDataBusiness()
+
+
+
+
+    //comparar bio... com o currentValue
+
 
     return (
         <Transition appear show={isOpen} as={Fragment}>
@@ -52,91 +66,97 @@ export const ModalUpdateData = ( { closeModal, isOpen }: ModalUpdateDataProps ) 
                                     Alterar dados
                                 </Dialog.Title>
 
-                                <main className='mt-4 flex flex-col gap-4'>
+                                <div
+                                    onSubmit={onSubmit}
+
+                                    className='mt-4 flex flex-col gap-4'>
                                     <label
-                                        htmlFor='password'
+                                        htmlFor='name'
                                         className='text-sm flex w-full font-medium flex-col gap-1'>
-                                        Nome e sobrenome:
+                                        Seu nome:
                                         <div className='flex w-full items-center'>
-                                            <input
-                                                // {...register( 'password' )}
-                                                id="password"
-                                                className={` h-10 rounded-sm border flex-1 pl-2  text-primary-400 bg-secondary-50 placeholder:font-light font-bold`}
-                                                placeholder="Wagner Luiz"
-                                            // type={showPassword ? 'text' : 'password'}
-                                            />
+                                            {bio.name &&
+
+                                                <input
+                                                    {...register( 'name' )}
+                                                    defaultValue={watch( 'name' ) === bio.name ? '' : bio.name}
+                                                    id="name"
+                                                    className={` h-10 rounded-sm border flex-1 pl-2  text-primary-400 bg-secondary-50 placeholder:font-light font-light`}
+
+                                                // type={showPassword ? 'text' : 'password'}
+                                                />
+                                            }
 
                                         </div>
                                     </label>
 
 
                                     <label
-                                        htmlFor='password'
+                                        htmlFor='username'
                                         className='text-sm flex w-full font-medium flex-col gap-2'>
                                         Nome de usuário:
                                         <div className='flex w-full items-center'>
-                                            <input
-                                                // {...register( 'password' )}
-                                                id="password"
-                                                className={` h-10 rounded-sm border flex-1 pl-2 text-primary-400 bg-secondary-50 placeholder:font-light font-bold`}
-                                                placeholder='devvagner'
-                                            // type={showPassword ? 'text' : 'password'}
-                                            />
+                                            {bio.username &&
+
+                                                <input
+                                                    {...register( 'username' )}
+                                                    defaultValue={watch( 'username' ) === bio.username ? '' : bio.username}
+                                                    id="username"
+                                                    className={` h-10 rounded-sm border flex-1 pl-2  text-primary-400 bg-secondary-50 placeholder:font-light font-light`}
+                                                    placeholder='devvagner'
+                                                // type={showPassword ? 'text' : 'password'}
+                                                />
+                                            }
 
                                         </div>
                                     </label>
+
                                     <label
-                                        htmlFor='password'
+                                        htmlFor='currentPassword'
                                         className='text-sm flex w-full font-medium flex-col gap-1'>
-                                        Email:
+                                        Título:
                                         <div className='flex w-full items-center'>
-                                            <input
-                                                // {...register( 'password' )}
-                                                id="password"
-                                                className={` h-10 rounded-sm border flex-1 pl-2 text-primary-400 bg-secondary-50 placeholder:font-light font-bold disabled:bg-secondary-400/60`}
-                                                placeholder='wagnerluizsg@gmail.com'
-                                                disabled
-                                            // type={showPassword ? 'text' : 'password'}
-                                            />
+                                            {bio.headline &&
+                                                <input
+                                                    {...register( 'title' )}
+                                                    defaultValue={bio.headline}
+                                                    id="currentPassword"
+                                                    className={` h-10 rounded-sm border flex-1 pl-2  text-primary-400 bg-secondary-50 placeholder:font-light font-light`}
+                                                // type={showPassword ? 'text' : 'password'}
+                                                />
+                                            }
 
                                         </div>
                                     </label>
-                                    <label
-                                        htmlFor='password'
-                                        className='text-sm flex w-full font-medium flex-col gap-1'>
-                                        Senha
-                                        <div className='flex w-full items-center'>
-                                            <input
-                                                // {...register( 'password' )}
-                                                id="password"
-                                                className={` h-10 rounded-sm border flex-1 pl-2  text-primary-400 bg-secondary-50 placeholder:font-light font-bold`}
-                                                placeholder='* * * * * * * * '
-                                            // type={showPassword ? 'text' : 'password'}
-                                            />
 
-                                        </div>
-                                    </label>
-                                </main>
 
-                                <div className="mt-4 flex gap-4">
-                                    <button
-                                        type="button"
-                                        className="inline-flex justify-center rounded-2xl border border-secondary-800 font-bold px-4 py-2 text-sm text-secondary-800 hover:bg-secondary-600/20 shadow-sm"
-                                        onClick={closeModal}>
-                                        Fechar
-                                    </button>
-                                    <button
-                                        type="button"
-                                        className="inline-flex justify-center items-center rounded-2xl bg-primary-400 font-bold px-4 py-2 text-sm text-secondary-50 hover:bg-primary-400/80 shadow-sm"
-                                        onClick={closeModal}>
-                                        Salvar alterações
-                                    </button>
+                                    <div className="mt-2 flex gap-4">
+                                        <button
+                                            type="button"
+                                            className="inline-flex justify-center rounded-2xl border border-secondary-800 font-bold px-4 py-2 text-sm text-secondary-800 hover:bg-secondary-600/20 shadow-sm"
+                                            onClick={closeModal}>
+                                            Fechar
+                                        </button>
+                                        <button
+                                            type="submit"
+                                            onClick={async () => {
+                                                await onSubmit()
+                                                await queryClient.invalidateQueries( ["user"] )
+                                                closeModal()
+                                            }}
+
+                                            className="inline-flex justify-center items-center rounded-2xl bg-primary-400 font-bold px-4 py-2 text-sm text-secondary-50 hover:bg-primary-400/80 shadow-sm"
+                                        // onClick={closeModal}
+                                        >
+                                            Salvar alterações
+                                        </button>
+                                    </div>
                                 </div>
                             </Dialog.Panel>
                         </Transition.Child>
                     </div>
                 </div>
             </Dialog>
-        </Transition>
+        </Transition >
     )
 }

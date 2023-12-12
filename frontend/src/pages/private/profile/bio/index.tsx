@@ -3,6 +3,7 @@ import * as Icon from "@phosphor-icons/react"
 import { ModalUpdateData } from '../update-data/modal-update-data'
 import { updateDataBusiness } from '../update-data/updata-data-business'
 
+
 interface BioProfileProps {
     bio: {
         name: string
@@ -22,6 +23,8 @@ export const BioProfile = ( { bio }: BioProfileProps ) => {
         openModal,
         closeModal
     } = updateDataBusiness()
+
+
 
     return (
         <div className='px-2 pb-4  bg-secondary-50'>
@@ -46,7 +49,7 @@ export const BioProfile = ( { bio }: BioProfileProps ) => {
                     <Icon.PencilSimple
                         onClick={openModal}
                         size={20}
-                        className='cursor-pointer mt-2' />
+                        className='cursor-pointer mt-2 fill-secondary-600 hover:fill-secondary-800' />
                 </div>
             </header>
 
@@ -54,6 +57,7 @@ export const BioProfile = ( { bio }: BioProfileProps ) => {
                 openModal={openModal}
                 closeModal={closeModal}
                 isOpen={isOpen}
+                bio={bio}
             />
 
 

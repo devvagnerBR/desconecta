@@ -1,6 +1,7 @@
 import { api } from "@/libs/axios";
 import { getCookie, removeCookie, setCookie } from "@/libs/cookies-js";
 import { queryClient } from "@/libs/react-query";
+import { updateUserProps } from "@/pages/private/profile/update-data/updata-data-business";
 import { useMutation } from "react-query";
 import { useNavigate } from "react-router-dom";
 
@@ -53,6 +54,10 @@ export const userRequests = () => {
         return profile.data
     }
 
+    const updateData = async ( data: updateUserProps ) => {
+        await api.patch( '/user/update', data )
+    }
+
     const logOut = async () => {
         removeCookie( "token" )
         removeCookie( "refresh_token" )
@@ -61,5 +66,5 @@ export const userRequests = () => {
 
 
 
-    return { login, register, getUserProfile, logOut }
+    return { login, register, getUserProfile, logOut, updateData }
 }
