@@ -92,7 +92,7 @@ export const Comments = ( { post }: { post: PostProps } ) => {
                             </div>
                         </div>
                         <main className='flex flex-wrap  w-full'>
-                            <p style={{ wordBreak: 'break-all' }} className=' text-sm flex text-secondary-800  flex-wrap'>{comment?.content}</p>
+                            <p className=' text-sm flex break-all text-secondary-800  flex-wrap'>{comment?.content}</p>
                         </main>
 
 

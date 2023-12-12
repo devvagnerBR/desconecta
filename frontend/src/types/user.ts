@@ -32,6 +32,7 @@ enum Genders {
 export interface User {
 
     id: string,
+    name: string,
     username: string,
     role: Role,
     avatar: string

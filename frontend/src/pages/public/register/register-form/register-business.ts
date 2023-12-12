@@ -8,12 +8,15 @@ import { userRequests } from '@/requests';
 
 export type RegisterFormProps = {
     curso: number
+    name: string,
     username: string
     email: string
     password: string
 }
 const formRegisterValidade = z.object( {
 
+    name:
+        z.string().nonempty( "Campo obrigatório" ),
     curso:
         z.coerce.number().min( 1 ).max( 3 ),
     username:
@@ -52,7 +55,7 @@ export const registerBusiness = () => {
 
 
     const currentValues = watch();
-    const formComplete = currentValues.curso && currentValues.username && currentValues.email && currentValues.password;
+    const formComplete = currentValues.curso && currentValues.username && currentValues.email && currentValues.password && currentValues.name;
 
 
     const onSubmit = handleSubmit( async ( data: RegisterFormProps ) => {

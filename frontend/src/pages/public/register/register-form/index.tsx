@@ -18,6 +18,19 @@ export const RegisterForm = () => {
             onSubmit={onSubmit}
             className='mt-4 flex flex-col gap-4 w-full'>
             <label
+                htmlFor='name'
+                className='text-sm flex font-medium flex-col gap-1'>
+                Nome e sobrenome
+                <input
+                    {...register( 'name' )}
+                    id="name"
+                    className='h-10 rounded-sm border pl-2 text-primary-400 placeholder:font-light font-bold'
+                    placeholder='Digite aqui o nome de usuário'
+                    type="text"
+                />
+                {errors.username && <span className="text-red-500 text-xs">{errors.username.message}</span>}
+            </label>
+            <label
                 htmlFor='username'
                 className='text-sm flex font-medium flex-col gap-1'>
                 Nome de usuário

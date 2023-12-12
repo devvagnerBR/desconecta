@@ -43,7 +43,7 @@ export const CardPost = ( { post }: CardPostProps ) => {
 
             <header className='flex h-12 items-center gap-2'>
                 <div
-                    onClick={() => GO_TO_OTHER_USER_PROFILE( navigate, author?.username )()}
+                    onClick={() => GO_TO_OTHER_USER_PROFILE( navigate, author?.username )}
                     className="w-full flex gap-4 h-full  items-center justify-start pr-2 cursor-pointer ">
                     <div className="flex flex-col order-1  gap-1 shrink-0 no_click">
                         <div className='flex items-end gap-2'>
