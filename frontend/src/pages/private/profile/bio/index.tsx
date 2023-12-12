@@ -1,5 +1,7 @@
 import React from 'react'
 import * as Icon from "@phosphor-icons/react"
+import { ModalUpdateData } from '../update-data/modal-update-data'
+import { updateDataBusiness } from '../update-data/updata-data-business'
 
 interface BioProfileProps {
     bio: {
@@ -15,8 +17,14 @@ interface BioProfileProps {
 
 export const BioProfile = ( { bio }: BioProfileProps ) => {
 
+    const {
+        isOpen,
+        openModal,
+        closeModal
+    } = updateDataBusiness()
+
     return (
-        <div className='px-2 pb-4 bg-secondary-50'>
+        <div className='px-2 pb-4  bg-secondary-50'>
 
             <header className='flex justify-between'>
                 <div className='flex flex-col gap-2 items-start'>
@@ -36,10 +44,18 @@ export const BioProfile = ( { bio }: BioProfileProps ) => {
                 </div>
                 <div className='h-12'>
                     <Icon.PencilSimple
+                        onClick={openModal}
                         size={20}
                         className='cursor-pointer mt-2' />
                 </div>
             </header>
+
+            <ModalUpdateData
+                openModal={openModal}
+                closeModal={closeModal}
+                isOpen={isOpen}
+            />
+
 
         </div>
     )
