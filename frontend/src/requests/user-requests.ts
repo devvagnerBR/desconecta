@@ -1,7 +1,7 @@
 import { api } from "@/libs/axios";
 import { getCookie, removeCookie, setCookie } from "@/libs/cookies-js";
 import { queryClient } from "@/libs/react-query";
-import { updateUserProps } from "@/pages/private/profile/update-data/updata-data-business";
+
 import { useMutation } from "react-query";
 import { useNavigate } from "react-router-dom";
 
@@ -52,6 +52,15 @@ export const userRequests = () => {
 
         const profile = await api.get( '/user' )
         return profile.data
+    }
+
+    interface updateUserProps {
+        cep?: string,
+        phone?: string,
+        address?: string,
+        name?: string,
+        username?: string,
+        title?: string,
     }
 
     const updateData = async ( data: updateUserProps ) => {

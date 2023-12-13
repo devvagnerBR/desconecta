@@ -10,6 +10,21 @@ interface UserContextData {
     isLogged: boolean,
     setIsLogged: React.Dispatch<React.SetStateAction<boolean>>
     data: User | undefined
+    bio: {
+        name: string
+        username: string
+        course: string
+        headline: string
+        address: string
+        email: string
+        phone: string
+    },
+    contact: {
+        email: string
+        phone: string
+        address: string
+        cep: string
+    }
 }
 
 const UserContext = React.createContext<UserContextData | null>( null )
@@ -34,9 +49,11 @@ const UserContextProvider = ( { children }: React.PropsWithChildren ) => {
             removeCookie( "refresh_token" )
             setIsLogged( false )
             GO_TO_LOGIN( navigate )
-            console.log("CAI AQUI")
+
         }
     } )
+
+
 
     React.useLayoutEffect( () => {
         if ( !!data && getCookie( "token" ) ) setIsLogged( true )
@@ -47,12 +64,32 @@ const UserContextProvider = ( { children }: React.PropsWithChildren ) => {
         if ( isLogged && !!data && isAuthenticateRoute ) GO_TO_HOMEPAGE( navigate )
     }, [isLogged] )
 
+    const bio = {
+        name: data?.name || '',
+        username: data?.username || '',
+        course: data?.course?.name || '',
+        headline: data?.UserInfos?.headline || '',
+        address: data?.UserInfos?.address || '',
+        email: data?.email || '',
+        phone: data?.UserInfos?.phone || '',
+    }
+
+  
+    const contact = {
+        email: data?.email || '',
+        phone: data?.UserInfos.phone || '',
+        address: data?.UserInfos?.address || '',
+        cep: data?.UserInfos?.cep || '',
+    }
+
     return (
-        <UserContext.Provider value={{ isLogged, setIsLogged, data }}>
+        <UserContext.Provider value={{ isLogged, setIsLogged, data, bio, contact }}>
             {children}
         </UserContext.Provider>
     )
 }
+
+
 
 const useUserContext = () => {
 

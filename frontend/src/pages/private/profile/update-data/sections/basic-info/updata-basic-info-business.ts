@@ -4,6 +4,7 @@ import { mutations } from "@/requests/mutations";
 import { zodResolver } from "@hookform/resolvers/zod";
 import React from "react"
 import { useForm } from "react-hook-form";
+import { useNavigate } from "react-router-dom";
 import { z } from "zod";
 
 export interface updateUserProps {
@@ -14,6 +15,7 @@ export interface updateUserProps {
 export const updateDataBusiness = () => {
 
     const { data: user } = useUserContext()
+    const navigate = useNavigate()
     const { updateUserMutate } = mutations()
 
     const formUpdateDataValidade = z.object( {
@@ -39,6 +41,7 @@ export const updateDataBusiness = () => {
     async function closeModal() {
         setIsOpen( false )
         await queryClient.invalidateQueries( ["user"] )
+        navigate( `/perfil/${user?.username}` )
     }
 
     function openModal() {

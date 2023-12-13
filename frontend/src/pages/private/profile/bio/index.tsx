@@ -1,7 +1,7 @@
 import React from 'react'
 import * as Icon from "@phosphor-icons/react"
 import { ModalUpdateData } from '../update-data/modal-update-data'
-import { updateDataBusiness } from '../update-data/updata-data-business'
+import { updateDataBusiness } from '../update-data/sections/basic-info/updata-basic-info-business'
 
 
 interface BioProfileProps {
@@ -57,7 +57,6 @@ export const BioProfile = ( { bio }: BioProfileProps ) => {
                 openModal={openModal}
                 closeModal={closeModal}
                 isOpen={isOpen}
-                bio={bio}
             />
 
 

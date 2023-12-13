@@ -27,7 +27,7 @@ export const Comments = ( { post }: { post: PostProps } ) => {
             if ( iconRef.current && iconRef.current.contains( event.target as Node ) ) {
                 return;
             } else if ( menuRef.current && !menuRef.current.contains( event.target as Node ) ) {
-                
+
             }
         }
         document.addEventListener( "mousedown", handleClickOutside, true );
@@ -68,7 +68,9 @@ export const Comments = ( { post }: { post: PostProps } ) => {
                         }
 
                         <div className='flex gap-2 w-full'>
-                            <img src={comment.author.avatar} alt="" className='w-6 h-6 rounded-full' />
+                            <div className='w-9 flex  h-8 border rounded-full overflow-hidden '>
+                                <img src={comment.author.avatar} alt="" className='w-10 h-10  object-cover object-top' />
+                            </div>
                             <div className='flex flex-col w-full'>
                                 <div className=' flex items-end gap-2  w-full'>
                                     <p className='text-secondary-800 text-base font-medium leading-3'>{comment.author.username}</p>

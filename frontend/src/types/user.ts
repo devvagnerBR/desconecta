@@ -42,6 +42,7 @@ export interface User {
     is_verified: boolean,
     course: Course,
     UserInfos: {
+        cep: string,
         address: string,
         birthday: string,
         gender: Genders,

@@ -17,7 +17,7 @@ export const AvatarProfile = ( { avatar }: { avatar: string } ) => {
                 <img
                     src={avatar}
                     alt={`avatar`}
-                    className="w-24 h-24 absolute top-0 left-0" />
+                    className="w-24 h-24 absolute object-cover object-top  top-0 left-0" />
 
                 {isHovered &&
                     <div className="w-24 h-24  bg-secondary-800/50 absolute top-0 left-0 flex flex-col items-center justify-center cursor-pointer">
