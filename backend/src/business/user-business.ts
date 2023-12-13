@@ -71,10 +71,11 @@ export class USER_BUSINESS {
         return user
     }
 
-    async update( userId: string, data: { username?: string, name?: string, title?: string } ) {
+    async update( userId: string, data: { username?: string, name?: string, title?: string, address?: string, cep?: string, phone?: string } ) {
 
         const user = await this.userDatabase.findById( userId )
         if ( !user ) throw new CustomError( 404, "usuário não encontrado" )
+        
         await this.userDatabase.update( userId, data )
     }
 

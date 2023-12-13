@@ -27,7 +27,16 @@ export class USER_DATABASE {
                 user_id: user.id,
                 code
             }
+        } )
 
+        await PRISMA.userInfos.create( {
+            data: {
+                user: {
+                    connect: {
+                        id: user.id
+                    }
+                }
+            }
         } )
 
 
@@ -78,6 +87,7 @@ export class USER_DATABASE {
                         gender: true,
                         phone: true,
                         links: true,
+                        cep: true
                     }
                 },
             }
@@ -101,8 +111,8 @@ export class USER_DATABASE {
         return user;
     }
 
-    async update( userId: string, data: { username?: string, name?: string, title?: string } ) {
-        
+    async update( userId: string, data: { username?: string, name?: string, title?: string, address?: string, cep?: string, phone?: string } ) {
+
         await PRISMA.user.update( {
             where: { id: userId }, data: {
                 username: data.username,
@@ -110,13 +120,15 @@ export class USER_DATABASE {
             }
         } )
 
-        if ( data.title ) {
             await PRISMA.userInfos.update( {
                 where: { user_id: userId }, data: {
-                    headline: data.title
+                    headline: data.title,
+                    address: data.address,
+                    phone: data.phone,
+                    cep: data.cep,
                 }
             } )
-        }
+        
     }
 
     async getUserPosts( userId: string ) {

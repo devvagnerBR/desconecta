@@ -143,12 +143,17 @@ export const USER_CONTROLLER = async () => {
             username:
                 z.string( { required_error: 'Username é obrigatório' } ).min( 3, " Username deve ter no mínimo 3 caracteres" ).optional(),
             title: z.string().optional(),
+            address: z.string().optional(),
+            phone: z.string().optional(),
+            cep: z.string().optional(),
         } );
 
-        const { name, title, username } = registerBodySchema.parse( req.body )
-        if ( !name && !title && !username ) return res.status( 400 ).send( { message: "Nenhum dado foi enviado" } )
+        const { name, title, username, address, cep, phone } = registerBodySchema.parse( req.body )
+        if ( !name && !title && !username && !address && !phone && !cep ) return res.status( 400 ).send( { message: "Nenhum dado foi enviado" } )
 
-        await userFactory.update( userId, { name, title, username } )
+
+        console.log( { name, title, username, address, cep, phone } )
+        await userFactory.update( userId, { name, title, username, address, cep, phone } )
 
         return res.status( 200 ).send( { message: "Usuário atualizado com sucesso" } )
 

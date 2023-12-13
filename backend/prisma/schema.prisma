@@ -7,7 +7,6 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-
 enum UserRole {
   ADMIN
   USER
@@ -22,7 +21,7 @@ model User {
   created_at  DateTime    @default(now())
   is_verified Boolean     @default(false)
   password    String
-  avatar      String? @default("https://firebasestorage.googleapis.com/v0/b/banco-imagens-art-rj.appspot.com/o/avatar%2Fdescomplica-mascote.png?alt=media&token=bf749128-f61f-4b34-8c75-b2fde6722313")
+  avatar      String?     @default("https://firebasestorage.googleapis.com/v0/b/banco-imagens-art-rj.appspot.com/o/avatar%2Fdescomplica-mascote.png?alt=media&token=bf749128-f61f-4b34-8c75-b2fde6722313")
   course_id   Int?
   course      Course?     @relation(fields: [course_id], references: [id])
   Comment     Comment[]
@@ -42,14 +41,15 @@ enum GenderType {
 }
 
 model UserInfos {
-  headline String?     @default("Não esquece de escrever um pouco sobre você! queremos te conhecer melhor 😊")
-  address  String?     @default("E se quiser, pode colocar seu endereço aqui também!")
-  phone    String?     @default("caso esteja se sentindo a vontade, pode colocar seu telefone aqui também!")
-  birthday String?     @default("e sua data de aniversário é muito bem vinda!")
+  headline String?     @default("Escreva um pouco sobre você aqui")
+  cep      String?     @default("00000000")
+  address  String?     @default("Brasil")
+  phone    String?     @default("00000000000")
+  birthday String?     @default("0000-00-00")
   gender   GenderType? @default(NOT_INFORMED)
   links    Json?
   user_id  String      @id @unique
-  user     User?       @relation(fields: [user_id], references: [id])
+  user     User?       @relation(fields: [user_id], references: [id], onDelete: Cascade)
 
   @@map("user_infos")
 }
