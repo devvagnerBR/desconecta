@@ -20,12 +20,24 @@
 
 }
 
+.sidebar_mobile_active.active {
 
 
-.modal_profile.active {
-    p {
-        @apply text-secondary-800 border-secondary-800;
+    div {
+        @apply border-primary-400 border shadow-md;
     }
 
+    svg {
+        @apply fill-primary-400 shrink-0;
+    }
 
 }
+
+
+    .modal_profile.active {
+        p {
+            @apply text-secondary-800 border-secondary-800;
+        }
+
+
+    }

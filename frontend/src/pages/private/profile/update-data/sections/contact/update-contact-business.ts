@@ -4,6 +4,7 @@ import { unmaskInput } from "@/utils/unmask-input"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm, Controller } from "react-hook-form"
 import { z } from "zod"
+import { updateDataBusiness } from "../basic-info/updata-basic-info-business"
 
 export interface updateContactBusinessProps {
     phone?: string
@@ -16,6 +17,8 @@ export const updateContactBusiness = () => {
 
     const { data: user } = useUserContext()
     const { updateUserMutate } = mutations()
+    const { closeModal } = updateDataBusiness()
+
     const formUpdateContactValidade = z.object( {
         cep: z.string().optional(),
         phone: z.string().optional(),
@@ -49,16 +52,19 @@ export const updateContactBusiness = () => {
             cep: cep === user?.UserInfos.cep ? undefined : cep,
             phone: phone === user?.UserInfos.phone ? undefined : phone,
         }
-
         const dataToSend = Object.fromEntries(
             Object.entries( body )
                 .filter( ( [key, value] ) => value !== '' && value !== undefined )
         )
 
-        await updateUserMutate( dataToSend )
-        cep = ""
-        phone = ""
-        address = ""
+        if ( !dataToSend.address && !dataToSend.cep && !dataToSend.phone ) {
+            closeModal()
+        } else {
+            await updateUserMutate( dataToSend )
+            cep = ""
+            phone = ""
+            address = ""
+        }
 
     } )
 

@@ -61,10 +61,19 @@ export const userRequests = () => {
         name?: string,
         username?: string,
         title?: string,
+        links?: {
+            linkedin?: string,
+            github?: string,
+            site?: string
+        }
     }
 
     const updateData = async ( data: updateUserProps ) => {
-        await api.patch( '/user/update', data )
+
+        if ( data.links ) {
+            const links = { links: { ...data } }
+            await api.patch( '/user/update', links )
+        } else await api.patch( '/user/update', data )
     }
 
     const logOut = async () => {

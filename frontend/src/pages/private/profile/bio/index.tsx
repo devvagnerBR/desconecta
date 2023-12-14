@@ -2,6 +2,7 @@ import React from 'react'
 import * as Icon from "@phosphor-icons/react"
 import { ModalUpdateData } from '../update-data/modal-update-data'
 import { updateDataBusiness } from '../update-data/sections/basic-info/updata-basic-info-business'
+import { useNavigate } from 'react-router-dom'
 
 
 interface BioProfileProps {
@@ -23,6 +24,8 @@ export const BioProfile = ( { bio }: BioProfileProps ) => {
         openModal,
         closeModal
     } = updateDataBusiness()
+
+    const navigate = useNavigate()
 
 
 
@@ -47,7 +50,10 @@ export const BioProfile = ( { bio }: BioProfileProps ) => {
                 </div>
                 <div className='h-12'>
                     <Icon.PencilSimple
-                        onClick={openModal}
+                        onClick={() => {
+                            openModal()
+                            navigate( 'editar' )
+                        }}
                         size={20}
                         className='cursor-pointer mt-2 fill-secondary-600 hover:fill-secondary-800' />
                 </div>

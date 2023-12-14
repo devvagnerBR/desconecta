@@ -47,7 +47,11 @@ export interface User {
         birthday: string,
         gender: Genders,
         headline: string
-        links: string[]
+        links: {
+            linkedin?: string
+            github?: string
+            site?: string
+        }
         phone: string
     }
 

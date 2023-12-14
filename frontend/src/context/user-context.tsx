@@ -24,7 +24,13 @@ interface UserContextData {
         phone: string
         address: string
         cep: string
+    },
+    links: {
+        linkedin?: string
+        github?: string
+        site?: string
     }
+
 }
 
 const UserContext = React.createContext<UserContextData | null>( null )
@@ -74,7 +80,7 @@ const UserContextProvider = ( { children }: React.PropsWithChildren ) => {
         phone: data?.UserInfos?.phone || '',
     }
 
-  
+
     const contact = {
         email: data?.email || '',
         phone: data?.UserInfos.phone || '',
@@ -82,8 +88,12 @@ const UserContextProvider = ( { children }: React.PropsWithChildren ) => {
         cep: data?.UserInfos?.cep || '',
     }
 
+
+
+    const links = data?.UserInfos.links || { linkedin: undefined, github: undefined, site: undefined };
+
     return (
-        <UserContext.Provider value={{ isLogged, setIsLogged, data, bio, contact }}>
+        <UserContext.Provider value={{ isLogged, setIsLogged, data, bio, contact, links }}>
             {children}
         </UserContext.Provider>
     )

@@ -43,7 +43,9 @@ export const UpdateContact = ( { closeModal }: UpdateContactProps ) => {
         setValue( 'phone', contact.phone )
 
     }, [contact] )
-    
+
+
+
     return (
         <section
             className='mt-4 flex flex-col gap-4'>
@@ -105,7 +107,7 @@ export const UpdateContact = ( { closeModal }: UpdateContactProps ) => {
                         {...register( 'phone' )}
 
                         placeholder='(00) 00000-0000'
-                        defaultValue={contact.phone && contact.phone ? contact.phone : ""}
+                        defaultValue={contact.phone ? contact.phone : ""}
                         type='text'
                         id="phone"
                         className={` h-10 rounded-sm border flex-1 pl-2 text-primary-400 bg-secondary-50 placeholder:font-light font-light`}

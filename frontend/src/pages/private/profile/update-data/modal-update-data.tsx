@@ -22,6 +22,8 @@ export const ModalUpdateData = ( { closeModal, isOpen }: ModalUpdateDataProps ) 
         watch
     } = updateDataBusiness()
 
+
+
     return (
         <Transition appear show={isOpen} as={Fragment}>
             <Dialog as="div" className="relative z-10 " onClose={closeModal}>
@@ -57,7 +59,7 @@ export const ModalUpdateData = ( { closeModal, isOpen }: ModalUpdateDataProps ) 
                                     onSubmit={onSubmit}
                                     className='mt-4 flex flex-col gap-4'>
                                     <header className='flex gap-4 max-sm:flex-col'>
-                                        <NavLink end className={"modal_profile"} to="">
+                                        <NavLink end className={"modal_profile"} to="editar">
                                             <p className='text-secondary-600 '>Informações básicas</p>
                                         </NavLink>
                                         <NavLink className={"modal_profile"} to="editar/contato">
@@ -71,9 +73,9 @@ export const ModalUpdateData = ( { closeModal, isOpen }: ModalUpdateDataProps ) 
                                         </NavLink>
                                     </header>
                                     <Routes>
-                                        <Route path='/' element={<UpdateProfile closeModal={closeModal} />} />
+                                        <Route path='editar' element={<UpdateProfile closeModal={closeModal} />} />
                                         <Route path='editar/contato' element={<UpdateContact closeModal={closeModal} />} />
-                                        <Route path='editar/links' element={<UpdateLinks />} />
+                                        <Route path='editar/links' element={<UpdateLinks closeModal={closeModal} />} />
                                         <Route path='editar/curso' element={<p>editar curso</p>} />
                                     </Routes>
                                 </main>
