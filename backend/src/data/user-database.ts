@@ -111,7 +111,7 @@ export class USER_DATABASE {
         return user;
     }
 
-    async update( userId: string, data: { username?: string, name?: string, title?: string, address?: string, cep?: string, phone?: string } ) {
+    async update( userId: string, data: { username?: string, name?: string, title?: string, address?: string, cep?: string, phone?: string, links?: { linkedin?: string, github?: string, site?: string } } ) {
 
         await PRISMA.user.update( {
             where: { id: userId }, data: {
@@ -120,15 +120,30 @@ export class USER_DATABASE {
             }
         } )
 
-            await PRISMA.userInfos.update( {
-                where: { user_id: userId }, data: {
-                    headline: data.title,
-                    address: data.address,
-                    phone: data.phone,
-                    cep: data.cep,
-                }
-            } )
-        
+        const currentInfos = await PRISMA.userInfos.findFirst( { where: { user_id: userId } } )
+
+        if ( !currentInfos?.links ) throw new Error( "userInfos não encontradas" )
+
+
+
+        const currentLinks = currentInfos.links
+        const convertedLinks = JSON.stringify( currentLinks as string )
+        const updateLinks = ( { ...JSON.parse( convertedLinks ), ...data.links } )
+
+        if ( updateLinks.linkedin === "" ) delete updateLinks.linkedin
+        if ( updateLinks.github === "" ) delete updateLinks.github
+        if ( updateLinks.site === "" ) delete updateLinks.site
+
+        await PRISMA.userInfos.update( {
+            where: { user_id: userId }, data: {
+                headline: data.title,
+                address: data.address,
+                phone: data.phone,
+                cep: data.cep,
+                links: updateLinks
+            }
+        } )
+
     }
 
     async getUserPosts( userId: string ) {

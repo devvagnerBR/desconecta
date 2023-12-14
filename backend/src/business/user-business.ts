@@ -71,7 +71,7 @@ export class USER_BUSINESS {
         return user
     }
 
-    async update( userId: string, data: { username?: string, name?: string, title?: string, address?: string, cep?: string, phone?: string } ) {
+    async update( userId: string, data: { username?: string, name?: string, title?: string, address?: string, cep?: string, phone?: string, links?: { linkedin?: string, github?: string, site?: string } } ) {
 
         const user = await this.userDatabase.findById( userId )
         if ( !user ) throw new CustomError( 404, "usuário não encontrado" )

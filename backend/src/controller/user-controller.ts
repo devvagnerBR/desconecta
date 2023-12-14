@@ -146,14 +146,17 @@ export const USER_CONTROLLER = async () => {
             address: z.string().optional(),
             phone: z.string().optional(),
             cep: z.string().optional(),
+            links: z.object( {
+                github: z.string().optional(),
+                linkedin: z.string().optional(),
+                site: z.string().optional(),
+            } ).optional(),
         } );
 
-        const { name, title, username, address, cep, phone } = registerBodySchema.parse( req.body )
-        if ( !name && !title && !username && !address && !phone && !cep ) return res.status( 400 ).send( { message: "Nenhum dado foi enviado" } )
+        const { name, title, username, address, cep, phone, links } = registerBodySchema.parse( req.body )
+        if ( !name && !title && !username && !address && !phone && !cep && !links ) return res.status( 400 ).send( { message: "Nenhum dado foi enviado" } )
 
-
-        console.log( { name, title, username, address, cep, phone } )
-        await userFactory.update( userId, { name, title, username, address, cep, phone } )
+        await userFactory.update( userId, { name, title, username, address, cep, phone, links } )
 
         return res.status( 200 ).send( { message: "Usuário atualizado com sucesso" } )
 
