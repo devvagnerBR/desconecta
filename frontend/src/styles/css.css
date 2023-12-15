@@ -39,3 +39,11 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
+
+.scroll_modal::-webkit-scrollbar {
+   @apply w-1 
+}
+
+.scroll_modal::-webkit-scrollbar-track {
+   @apply bg-secondary-50
+}

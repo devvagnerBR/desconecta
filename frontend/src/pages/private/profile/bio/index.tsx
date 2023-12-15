@@ -1,8 +1,8 @@
-import React from 'react'
 import * as Icon from "@phosphor-icons/react"
 import { ModalUpdateData } from '../update-data/modal-update-data'
 import { updateDataBusiness } from '../update-data/sections/basic-info/updata-basic-info-business'
 import { useNavigate } from 'react-router-dom'
+import { Links } from './links'
 
 
 interface BioProfileProps {
@@ -27,8 +27,6 @@ export const BioProfile = ( { bio }: BioProfileProps ) => {
 
     const navigate = useNavigate()
 
-
-
     return (
         <div className='px-2 pb-4  bg-secondary-50'>
 
@@ -39,14 +37,16 @@ export const BioProfile = ( { bio }: BioProfileProps ) => {
                         <h1 className='text-sm font-medium text-primary-400 leading-3'>@{bio.username}</h1>
                     </div>
                     <p className='text-sm text-secondary-600 leading-3'>{bio.course}</p>
-                    <p className='text-sm text-secondary-800 leading-5 mt-2 '>{bio.headline}</p>
+                    <p className='text-sm text-secondary-800 leading-5 mt-2'>{bio.headline}</p>
+
                     <div className='flex items-end gap-2 max-[400px]:flex-col max-[400px]:items-start'>
-                        <div className='flex  items-end gap-1 '>
-                            <Icon.MapPin size={16} className='fill-secondary-600' />
+                        <div className='flex items-end gap-1'>
+                            <Icon.MapPin size={16} className='fill-primary-400' />
                             <span className='text-sm leading-3 text-secondary-600'>{bio.address}</span>
                         </div>
                         <p className='leading-3 text-sm text-primary-400 font-medium cursor-pointer'>Informações de contato</p>
                     </div>
+                    <Links />
                 </div>
                 <div className='h-12'>
                     <Icon.PencilSimple

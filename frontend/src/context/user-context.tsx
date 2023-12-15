@@ -59,8 +59,6 @@ const UserContextProvider = ( { children }: React.PropsWithChildren ) => {
         }
     } )
 
-
-
     React.useLayoutEffect( () => {
         if ( !!data && getCookie( "token" ) ) setIsLogged( true )
         else setIsLogged( false )
