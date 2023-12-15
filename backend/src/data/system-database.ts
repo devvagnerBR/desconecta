@@ -4,11 +4,18 @@ import { Prisma, Course, GenderType, AvatarType } from "@prisma/client";
 
 export class SYSTEM_DATABASE {
 
-    async getAllAvailableAvatars( gender?: AvatarType ): Promise<string[]> {
+    async getAllAvailableAvatars( gender?: AvatarType ) {
         const avatars = await PRISMA.avatar.findMany( {
-            where: { gender }
+            where: { gender },
+            select: {
+                url: true,
+                gender: true,
+                id: true,
+            }
         } )
-        return avatars.map( avatar => avatar.url )
+
+
+        return avatars
     }
 
 }

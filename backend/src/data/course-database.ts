@@ -9,4 +9,12 @@ export class COURSE_DATABASE {
         return course;
     }
 
+    getCourses() {
+        return PRISMA.course.findMany( {
+            where: { status: true },
+            orderBy: { name: 'asc' },
+            select: { id: true, name: true, }
+        } );
+    }
+
 }

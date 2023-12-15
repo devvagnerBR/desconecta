@@ -9,6 +9,7 @@ import { postRoutes } from "./routes/post-routes";
 import { adminRoutes } from "./routes/admin-routes";
 import { systemRoutes } from "./routes/system-routes";
 import { CustomError } from "./entities/custom-error";
+import { courseRoutes } from "./routes/course-routes";
 
 export const app = fastify();
 
@@ -36,7 +37,7 @@ app.register( userRoutes );
 app.register( postRoutes );
 app.register( adminRoutes );
 app.register( systemRoutes );
-
+app.register( courseRoutes );
 
 app.setErrorHandler( ( error, _, res ) => {
 
